@@ -8,14 +8,144 @@ environment:
 dependencies: 
   cupertino_icons: ^1.0.2
   get: 4.6.5
+  dio: any
+  zoom_tap_animation: any
+  google_fonts: any
+  internet_connection_checker: any
+  url_launcher: any
+  get_storage: any
+  animated_theme_switcher: any
+  easy_localization: 3.0.1
+  package_info_plus: ^3.0.3
+  platform_device_id: ^1.0.1
+  # this package use for changing the package name of the project
+  # to change the package name run this command in terminal
+  #flutter pub run change_app_package_name:main com.package.demo
+  change_app_package_name: any
+  rounded_loading_button: ^2.1.0
+  searchfield: ^0.7.5
+  flutter_svg: ^2.0.4
+
+
+dependency_overrides:
+  intl: ^0.17.0-nullsafety
+
+
+
   flutter: 
     sdk: flutter
 
 dev_dependencies: 
-  flutter_lints: ^2.0.0
+  # flutter_lints: ^2.0.0
+  flutter_launcher_icons: any
+
+# auto generating icons for android & ios
+# to generate run these command
+# @@ - run this command -----> [flutter pub get]
+# @@ - then run this --------> [flutter pub run flutter_launcher_icons]
+flutter_icons:
+  android: "ic_launcher"
+  ios: true
+  remove_alpha_ios: true
+  image_path: "assets/logo/ts-large.png"
+  min_sdk_android: 21 # android min sdk min:16, default 21
+  # web:
+  #   generate: true
+  #   image_path: "path/to/image.png"
+  #   background_color: "#hexcode"
+  #   theme_color: "#hexcode"
+  # windows:
+  #   generate: true
+  #   image_path: "path/to/image.png"
+  #   icon_size: 48 # min:48, max:256, default: 48
+  # macos:
+  #   generate: true
+  #   image_path: "path/to/image.png"
+
+
+
   flutter_test: 
     sdk: flutter
 
 flutter: 
   uses-material-design: true
+
+# assets with custom folder
+  assets:
+    - assets/
+    - assets/svg_icons/
+    - assets/banner/
+    - assets/custom_images/
+    - assets/device_icon/
+    - assets/logo/
+    - assets/translations/
+
+# custom fonts
+# I am using sans pro
+# you can use another fonts like these
+  fonts:
+    - family: SansPro
+      fonts:
+      # bold and bold italic font
+        - asset: fonts/Source_Sans_Pro/SourceSansPro-Bold.ttf
+          weight: 900
+        - asset: fonts/Source_Sans_Pro/SourceSansPro-BoldItalic.ttf
+          weight: 900
+          style: italic
+      # semibold and semibold italic font
+        - asset: fonts/Source_Sans_Pro/SourceSansPro-SemiBold.ttf
+          weight: 700
+        - asset: fonts/Source_Sans_Pro/SourceSansPro-SemiBoldItalic.ttf
+          weight: 700
+          style: italic
+      # regular and italic font
+        - asset: fonts/Source_Sans_Pro/SourceSansPro-Regular.ttf
+        - asset: fonts/Source_Sans_Pro/SourceSansPro-Italic.ttf
+          style: italic
+      # light and light italic font
+        - asset: fonts/Source_Sans_Pro/SourceSansPro-Light.ttf
+          weight: 300
+        - asset: fonts/Source_Sans_Pro/SourceSansPro-LightItalic.ttf
+          weight: 300
+          style: italic
+      # light and extra light italic font
+        - asset: fonts/Source_Sans_Pro/SourceSansPro-ExtraLight.ttf
+          weight: 100
+        - asset: fonts/Source_Sans_Pro/SourceSansPro-ExtraLightItalic.ttf
+          weight: 100
+          style: italic
+    # add another font
+    # - family: SansPro
+    #   fonts:
+    #   # bold and bold italic font
+    #     - asset: fonts/Source_Sans_Pro/SourceSansPro-Bold.ttf
+    #       weight: 900
+    #     - asset: fonts/Source_Sans_Pro/SourceSansPro-BoldItalic.ttf
+    #       weight: 900
+    #       style: italic
+    #   # semibold and semibold italic font
+    #     - asset: fonts/Source_Sans_Pro/SourceSansPro-SemiBold.ttf
+    #       weight: 700
+    #     - asset: fonts/Source_Sans_Pro/SourceSansPro-SemiBoldItalic.ttf
+    #       weight: 700
+    #       style: italic
+    #   # regular and italic font
+    #     - asset: fonts/Source_Sans_Pro/SourceSansPro-Regular.ttf
+    #     - asset: fonts/Source_Sans_Pro/SourceSansPro-Italic.ttf
+    #       style: italic
+    #   # light and light italic font
+    #     - asset: fonts/Source_Sans_Pro/SourceSansPro-Light.ttf
+    #       weight: 300
+    #     - asset: fonts/Source_Sans_Pro/SourceSansPro-LightItalic.ttf
+    #       weight: 300
+    #       style: italic
+    #   # light and extra light italic font
+    #     - asset: fonts/Source_Sans_Pro/SourceSansPro-ExtraLight.ttf
+    #       weight: 100
+    #     - asset: fonts/Source_Sans_Pro/SourceSansPro-ExtraLightItalic.ttf
+    #       weight: 100
+    #       style: italic
+
+      
+
 

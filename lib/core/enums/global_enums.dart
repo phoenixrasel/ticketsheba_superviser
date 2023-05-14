@@ -1,0 +1,3 @@
+enum SubmitType{EMAIL_SMS,CANCEL, SHOW_MY_TICKET}
+
+enum BookedType {CHECKED, STORE}
