@@ -20,12 +20,7 @@ class HomeView extends GetView<HomeController> {
         centerTitle: true,
       ),
       drawer: CustomDrawer.drawer(controller),
-      body: const Center(
-        child: Text(
-          'HomeView is working',
-          style: TextStyle(fontSize: 20),
-        ),
-      ),
+      body: Column(children: []),
     );
   }
 }

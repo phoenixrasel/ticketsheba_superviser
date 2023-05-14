@@ -1,14 +1,14 @@
-
 import 'package:easy_localization/easy_localization.dart';
 
 extension StringListExt<String> on List<String> {
   List<String> removeDuplicates() {
     var list = <String>[];
-    for (String value in this) {
+    this.forEach((value) {
       if (!list.contains(value)) {
         list.add(value);
       }
-    }
+    });
+    
     this.clear();
     this.addAll(list);
     return this;
