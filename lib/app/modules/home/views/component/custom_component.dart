@@ -1,13 +1,62 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:searchfield/searchfield.dart';
+import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 // import 'package:searchfield/searchfield.dart';
 
 import '../../../../../core/extra/app_dimens.dart';
+import '../../../../../core/theme/extra_colors.dart';
+import '../../../../../global/global_backdrop.dart';
 import '../../../../../global/widget/global_decoration.dart';
 import '../../controllers/home_controller.dart';
 
 class HomeComponent {
+  static normalAlert(
+          {bool barrierDismissible = false,
+          required String titleText,
+          required String bodyText,
+          String? btnText,
+          required VoidCallback onTap,
+          bool closeVisible = false}) =>
+      Get.generalDialog(
+        barrierDismissible: barrierDismissible,
+        barrierLabel: "",
+        transitionBuilder: (context, animation, secondaryAnimation, child) =>
+            GlobalBackDrop().drop(animation, child),
+        pageBuilder: (context, animation, secondaryAnimation) => AlertDialog(
+          insetPadding: EdgeInsets.symmetric(horizontal: AppDimens.bodyPadding),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          contentPadding: EdgeInsets.all(
+            AppDimens.bodyPadding * 2,
+          ),
+          title: Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+            ZoomTapAnimation(
+              onTap: () {
+                Get.back();
+              },
+              child: Container(
+                height: 40,
+                width: 40,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(100),
+                  color: Colors.grey.shade300,
+                ),
+                alignment: Alignment.center,
+                child: Icon(Icons.close, color: Colors.grey.shade700),
+              ),
+            )
+          ]),
+          content: Container(
+            height: 270,
+            width: Get.width,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [],
+            ),
+          ),
+        ),
+      );
   static searchView(
           {required HomeController controller,
           required ColorScheme theme,

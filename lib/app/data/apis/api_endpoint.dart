@@ -1,6 +1,6 @@
 class AppUrl {
   /// auth urls
-  static String LOGIN_URL = "/customer-login";
+  static String LOGIN_URL = "/company-login";
   static String REGISTER_URL = "/customer-registration";
   static String LOGOUT_URL = "/customer-logout";
 

@@ -5,6 +5,7 @@ import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 import '../../core/extra/app_dimens.dart';
 
 class GlobalButton {
+  
   static btn(
           {required String text,
           required VoidCallback onTap,

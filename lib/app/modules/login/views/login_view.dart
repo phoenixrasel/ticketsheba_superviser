@@ -18,71 +18,67 @@ class LoginView extends GetView<LoginController> {
         duration: Duration(seconds: 4),
         child: Padding(
             padding: EdgeInsets.all(AppDimens.bodyPadding),
-            child: Obx(
-              () => SingleChildScrollView(
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: 100,
-                    ),
-                    Image.asset(
-                      AppAssets.MAIN_RED_LOGO,
-                      height: 50,
-                      width: Get.width / 2,
-                    ),
-                    SizedBox(
-                      height: 50,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Text(
-                           "SIGN IN",
-                          style: TextStyle(
-                              color: Colors.grey.shade600,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 30),
-                        ),
-                      ],
-                    ),
-                    
-                    
-                    GlobalInput.inputField(
-                        controller: controller.inputs['user']!,
-                        headerText: "User email"),
-                    
-                    GlobalInput.inputField(
-                        controller: controller.inputs['pass']!,
-                        headerText: "Password"),
-                    SizedBox(
-                      height: AppDimens.paddingExtraGaint,
-                    ),
-                    Obx(
-                      () => controller.isSubmitting.value
-                          ? GlobalLoadng.loadingOnly(
-                              color: Theme.of(context).colorScheme.primary)
-                          : GlobalButton.btn(
-                              text:  "Sign In",
-                              onTap: () {
-                                  controller.login();
-                                
-                              }),
-                    ),
-                    SizedBox(
-                      height: AppDimens.breatingSpace,
-                    ),
-                    // GlobalTextWidget.twoText(
-                    //     onTap: () {
-                    //       controller.changeLoginOption();
-                    //     },
-                    //     text1: controller.shouldLogin.value
-                    //         ? "Don't have an Account?"
-                    //         : "Already have an Account?",
-                    //     text2: controller.shouldLogin.value
-                    //         ? " SIGN UP"
-                    //         : " SIGN IN")
-                  ],
-                ),
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: 100,
+                  ),
+                  Image.asset(
+                    AppAssets.MAIN_RED_LOGO,
+                    height: 50,
+                    width: Get.width / 2,
+                  ),
+                  SizedBox(
+                    height: 50,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text(
+                        "SIGN IN",
+                        style: TextStyle(
+                            color: Colors.grey.shade600,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 30),
+                      ),
+                    ],
+                  ),
+
+                  GlobalInput.inputField(
+                      controller: controller.inputs['user']!,
+                      headerText: "User email"),
+
+                  GlobalInput.inputField(
+                      controller: controller.inputs['pass']!,
+                      headerText: "Password"),
+                  SizedBox(
+                    height: AppDimens.paddingExtraGaint,
+                  ),
+                  Obx(
+                    () => controller.isSubmitting.value
+                        ? GlobalLoadng.loadingOnly(
+                            color: Theme.of(context).colorScheme.primary)
+                        : GlobalButton.btn(
+                            text: "Sign In",
+                            onTap: () {
+                              controller.login();
+                            }),
+                  ),
+                  SizedBox(
+                    height: AppDimens.breatingSpace,
+                  ),
+                  // GlobalTextWidget.twoText(
+                  //     onTap: () {
+                  //       controller.changeLoginOption();
+                  //     },
+                  //     text1: controller.shouldLogin.value
+                  //         ? "Don't have an Account?"
+                  //         : "Already have an Account?",
+                  //     text2: controller.shouldLogin.value
+                  //         ? " SIGN UP"
+                  //         : " SIGN IN")
+                ],
               ),
             )),
       ),

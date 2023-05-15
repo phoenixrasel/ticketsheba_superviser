@@ -13,7 +13,7 @@ const BASE_URL =
     // ? 'http://192.168.11.21/ecopulse/public' //----------Salman Vai------------//
     // ? 'http://192.168.11.12/8.1/eco_pulse/public' //---------------Raihan Vai------------//
     // :
-    'http://system.ticketsheba.com/api';
+    'https://system.ticketsheba.com/api';
 
 class ApiService extends GetxService {
   late Dio _dio;

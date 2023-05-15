@@ -6,11 +6,12 @@ import '../../../../global/global_alert/global_snackbar.dart';
 import '../../../data/services/prefrences.dart';
 import '../../../data/services/repository.dart';
 
+import 'package:flutter/foundation.dart';
+
 class LoginController extends GetxController {
-  var from = Get.arguments['from'] ?? "";
   Map<String, TextEditingController> inputs = {
-    "user": TextEditingController(),
-    "pass": TextEditingController()
+    "user": TextEditingController(text: kDebugMode ? "hridoy@mail.com" : ""),
+    "pass": TextEditingController(text: kDebugMode ? "12345678" : "")
   };
 
   RxBool shouldLogin = true.obs;
