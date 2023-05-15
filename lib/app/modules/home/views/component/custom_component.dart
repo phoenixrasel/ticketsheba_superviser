@@ -150,4 +150,19 @@ class HomeComponent {
           ],
         ),
       );
+
+      static homeButtons({required String btnText, required Color color, required VoidCallback onTap}) => ZoomTapAnimation(
+                                              onTap: onTap,
+                                              child: Container(
+                                                padding: EdgeInsets.symmetric(
+                                                    horizontal: 6, vertical: 6),
+                                                decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(3),
+                                                    color: color),
+                                                child: Text(btnText,
+                                                    style: TextStyle(
+                                                        color: Colors.white)),
+                                              ),
+                                            );
 }

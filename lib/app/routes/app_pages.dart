@@ -14,6 +14,8 @@ import '../modules/splash_screen/bindings/splash_screen_binding.dart';
 import '../modules/splash_screen/views/splash_screen_view.dart';
 import '../modules/stand_up/bindings/stand_up_binding.dart';
 import '../modules/stand_up/views/stand_up_view.dart';
+import '../modules/standup_page/bindings/standup_page_binding.dart';
+import '../modules/standup_page/views/standup_page_view.dart';
 
 part 'app_routes.dart';
 
@@ -57,6 +59,11 @@ class AppPages {
       name: _Paths.CONFIRM_PAGE,
       page: () => const ConfirmPageView(),
       binding: ConfirmPageBinding(),
+    ),
+    GetPage(
+      name: _Paths.STANDUP_PAGE,
+      page: () => const StandupPageView(),
+      binding: StandupPageBinding(),
     ),
   ];
 }

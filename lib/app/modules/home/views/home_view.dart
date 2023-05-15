@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:ticketsheba_superviser/app/modules/home/views/component/custom_component.dart';
+import 'package:ticketsheba_superviser/app/routes/app_pages.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
 import '../../../../core/extra/app_assets.dart';
@@ -144,43 +145,16 @@ class HomeView extends GetView<HomeController> {
                                         width: 250,
                                         child: Row(
                                           children: [
-                                            Container(
-                                              padding: EdgeInsets.symmetric(
-                                                  horizontal: 6, vertical: 6),
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(3),
-                                                  color: Colors.deepPurple),
-                                              child: Text("Booking",
-                                                  style: TextStyle(
-                                                      color: Colors.white)),
-                                            ),
-                                            Container(
-                                              margin: EdgeInsets.only(left: 12),
-                                              padding: EdgeInsets.symmetric(
-                                                  horizontal: 6, vertical: 6),
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(3),
-                                                  color:
-                                                      Colors.yellow.shade800),
-                                              child: Text("Quick.B",
-                                                  style: TextStyle(
-                                                      color: Colors.white)),
-                                            ),
-                                            Container(
-                                              margin: EdgeInsets.only(left: 12),
-                                              padding: EdgeInsets.symmetric(
-                                                  horizontal: 6, vertical: 6),
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(3),
-                                                  color: Colors
-                                                      .deepOrange.shade700),
-                                              child: Text("StandUp.B",
-                                                  style: TextStyle(
-                                                      color: Colors.white)),
-                                            ),
+                                            HomeComponent.homeButtons(btnText: "Booking", color: Colors.deepPurple, onTap:  (){
+                                                Get.toNamed(Routes.BOOKING_PAGE);
+                                              }),
+                                              HomeComponent.homeButtons(btnText: "Quick.B", color: Colors.yellow.shade800, onTap:  (){
+                                                Get.toNamed(Routes.QUICK_BOOKING_PAGE);
+                                              }),
+                                              HomeComponent.homeButtons(btnText: "StandUp.B", color: Colors
+                                                      .deepOrange.shade700, onTap:  (){
+                                                Get.toNamed(Routes.STANDUP_PAGE);
+                                              }),
                                           ],
                                         ),
                                       )

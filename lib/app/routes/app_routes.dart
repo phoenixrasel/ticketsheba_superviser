@@ -10,6 +10,7 @@ abstract class Routes {
   static const QUICK_BOOKING_PAGE = _Paths.QUICK_BOOKING_PAGE;
   static const STAND_UP = _Paths.STAND_UP;
   static const CONFIRM_PAGE = _Paths.CONFIRM_PAGE;
+  static const STANDUP_PAGE = _Paths.STANDUP_PAGE;
 }
 
 abstract class _Paths {
@@ -21,4 +22,5 @@ abstract class _Paths {
   static const QUICK_BOOKING_PAGE = '/quick-booking-page';
   static const STAND_UP = '/stand-up';
   static const CONFIRM_PAGE = '/confirm-page';
+  static const STANDUP_PAGE = '/standup-page';
 }
