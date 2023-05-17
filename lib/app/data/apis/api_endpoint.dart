@@ -5,7 +5,7 @@ class AppUrl {
   static String LOGOUT_URL = "/customer-logout";
 
   static String ALL_ROUTES_URL = "/route";
-  static String TRIP_LIST_URL = "/filter-trip";
+  static String TRIP_LIST_URL = "/trip/list";
   static String BOOKING_CREATE_URL = "/customer-booking/create";
 
   static String CUSTOMER_TICKET_SMS_URL = "/customer-ticket-sms";

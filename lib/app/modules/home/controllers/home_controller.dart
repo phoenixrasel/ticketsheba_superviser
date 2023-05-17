@@ -5,8 +5,7 @@ import 'package:ticketsheba_superviser/core/extensions/extensions.dart';
 import '../../../data/services/prefrences.dart';
 import '../../../data/services/repository.dart';
 
-
-enum ApiCallState { IDLE, FETCHING, DONE } 
+enum ApiCallState { IDLE, FETCHING, DONE }
 
 class HomeController extends GetxController {
   var getRouteState = ApiCallState.IDLE.obs;
@@ -38,7 +37,7 @@ class HomeController extends GetxController {
     super.onInit();
     loginData.value = Pref.readData(key: Pref.SESSION);
     update();
-    // getAllRoutes();
+    getAllRoutes();
   }
 
   @override
@@ -51,26 +50,29 @@ class HomeController extends GetxController {
     super.onClose();
   }
 
+  RxList<dynamic> busData = <dynamic>[].obs;
+
   getAllRoutes() async {
     loginData.value = Pref.readData(key: Pref.SESSION);
     update();
     try {
       getRouteState(ApiCallState.FETCHING);
-      final response = await Repository().getAllRoutes();
-      print("response==> $response");
-      routeList(response as List<dynamic>);
-
-      from.clear();
-      to.clear();
-      for (dynamic obj in routeList) {
-        from.add(obj['start_point'] ?? "");
-        to.add(obj['end_point'] ?? "");
-      }
-      from.removeDuplicates();
-      to.removeDuplicates();
-      getRouteState(ApiCallState.DONE);
+      await Repository().getAllRoutes().then((response) {
+        print("response==> $response");
+        // routeList(response as List<dynamic>);
+        busData.value = response['data'];
+        // from.clear();
+        // to.clear();
+        // for (dynamic obj in routeList) {
+        //   from.add(obj['start_point'] ?? "");
+        //   to.add(obj['end_point'] ?? "");
+        // }
+        // from.removeDuplicates();
+        // to.removeDuplicates();
+        getRouteState(ApiCallState.DONE);
+      });
     } on Exception catch (e) {
-      getRouteState(ApiCallState.IDLE);
+      getRouteState(ApiCallState.DONE);
       Get.rawSnackbar(message: e.toString(), backgroundColor: Colors.red);
     }
   }

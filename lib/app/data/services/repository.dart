@@ -37,8 +37,8 @@ class Repository extends ApiProviders {
               endPoint: AppUrl.REGISTER_URL, method: Method.POST, map: map)
           .then((value) => value);
 
-  Future<dynamic> getAllRoutes() async => await commonApiCall(
-      endPoint: AppUrl.ALL_ROUTES_URL,
+  Future<dynamic> getAllRoutes() async => await tokenBaseApi(
+      endPoint: AppUrl.TRIP_LIST_URL,
       method: Method.GET,
       map: {}).then((value) => value);
 
@@ -111,16 +111,17 @@ class Repository extends ApiProviders {
   Future<dynamic> tempSeatCheckedAndStore(
           {required int tripId,
           required String seatNumber,
-          required BookedType bookedType, required bool shouldStore}) async =>
+          required BookedType bookedType,
+          required bool shouldStore}) async =>
       await commonApiCall(
               endPoint: bookedType == BookedType.CHECKED
                   ? AppUrl.TEMPORARY_CHECK_BOOK_URL
-                  : shouldStore ? AppUrl.TEMPORARY_BOOKED_URL : AppUrl.TEMPORARY_DELETE_URL,
+                  : shouldStore
+                      ? AppUrl.TEMPORARY_BOOKED_URL
+                      : AppUrl.TEMPORARY_DELETE_URL,
               method: Method.POST,
               map: {"assign_trip_id": tripId, "seat_number": seatNumber})
           .then((value) => value);
-
-        
 
   Future<dynamic> getTicketInformation({required int customerId}) async =>
       await tokenBaseApi(

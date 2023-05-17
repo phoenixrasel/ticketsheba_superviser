@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ticketsheba_superviser/app/modules/home/views/component/custom_component.dart';
 import 'package:ticketsheba_superviser/app/routes/app_pages.dart';
+import 'package:ticketsheba_superviser/global/widget/global_loading.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
 import '../../../../core/extra/app_assets.dart';
@@ -95,75 +96,16 @@ class HomeView extends GetView<HomeController> {
                       ],
                     ),
                   ),
-                  SingleChildScrollView(
-                    child: Column(
-                        children: [1, 2, 3, 4, 5, 6, 7]
-                            .map(
-                              (e) => Card(
-                                child: Container(
-                                  padding: EdgeInsets.all(12),
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                          width: 50, child: Text("15 May, 23")),
-                                      SizedBox(
-                                        width: 12,
-                                      ),
-                                      Container(
-                                          width: 70,
-                                          child: Text("Dhaka-to-Feni")),
-                                      SizedBox(
-                                        width: 12,
-                                      ),
-                                      Container(
-                                          width: 40, child: Text("non-ac")),
-                                      SizedBox(
-                                        width: 12,
-                                      ),
-                                      Container(
-                                          width: 60, child: Text("02:00 AM")),
-                                      SizedBox(
-                                        width: 12,
-                                      ),
-                                      Container(
-                                          width: 50, child: Text("534534")),
-                                      SizedBox(
-                                        width: 12,
-                                      ),
-                                      Container(width: 50, child: Text("400")),
-                                      SizedBox(
-                                        width: 12,
-                                      ),
-                                      Container(
-                                          alignment: Alignment.center,
-                                          width: 50,
-                                          child: Text("41")),
-                                      SizedBox(
-                                        width: 12,
-                                      ),
-                                      Container(
-                                        width: 250,
-                                        child: Row(
-                                          children: [
-                                            HomeComponent.homeButtons(btnText: "Booking", color: Colors.deepPurple, onTap:  (){
-                                                Get.toNamed(Routes.BOOKING_PAGE);
-                                              }),
-                                              HomeComponent.homeButtons(btnText: "Quick.B", color: Colors.yellow.shade800, onTap:  (){
-                                                Get.toNamed(Routes.QUICK_BOOKING_PAGE);
-                                              }),
-                                              HomeComponent.homeButtons(btnText: "StandUp.B", color: Colors
-                                                      .deepOrange.shade700, onTap:  (){
-                                                Get.toNamed(Routes.STANDUP_PAGE);
-                                              }),
-                                          ],
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            )
-                            .toList()),
+                  SizedBox(
+                    height: 12,
+                  ),
+                  Obx(
+                    () => controller.getRouteState == ApiCallState.FETCHING
+                        ? GlobalLoadng.loadingOnly()
+                        : SingleChildScrollView(
+                            child: Column(
+                                children: getTripList()),
+                          ),
                   ),
                 ],
               ),
@@ -172,5 +114,98 @@ class HomeView extends GetView<HomeController> {
         ]),
       ),
     );
+  }
+
+  List<Widget> getTripList() {
+    List<Widget> list = [];
+    controller.busData.forEach((element) {
+      list.add(Card(
+                                        child: Container(
+                                          padding: EdgeInsets.all(12),
+                                          child: Row(
+                                            children: [
+                                              Container(
+                                                  width: 50,
+                                                  child: Text("15 May, 23")),
+                                              SizedBox(
+                                                width: 12,
+                                              ),
+                                              Container(
+                                                  width: 70,
+                                                  child: Text("Dhaka-to-Feni")),
+                                              SizedBox(
+                                                width: 12,
+                                              ),
+                                              Container(
+                                                  width: 40,
+                                                  child: Text("non-ac")),
+                                              SizedBox(
+                                                width: 12,
+                                              ),
+                                              Container(
+                                                  width: 60,
+                                                  child: Text("02:00 AM")),
+                                              SizedBox(
+                                                width: 12,
+                                              ),
+                                              Container(
+                                                  width: 50,
+                                                  child: Text("534534")),
+                                              SizedBox(
+                                                width: 12,
+                                              ),
+                                              Container(
+                                                  width: 50,
+                                                  child: Text("400")),
+                                              SizedBox(
+                                                width: 12,
+                                              ),
+                                              Container(
+                                                  alignment: Alignment.center,
+                                                  width: 50,
+                                                  child: Text("41")),
+                                              SizedBox(
+                                                width: 12,
+                                              ),
+                                              Container(
+                                                width: 250,
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceEvenly,
+                                                  children: [
+                                                    HomeComponent.homeButtons(
+                                                        btnText: "Booking",
+                                                        color:
+                                                            Colors.deepPurple,
+                                                        onTap: () {
+                                                          Get.toNamed(Routes
+                                                              .BOOKING_PAGE);
+                                                        }),
+                                                    HomeComponent.homeButtons(
+                                                        btnText: "Quick.B",
+                                                        color: Colors
+                                                            .yellow.shade800,
+                                                        onTap: () {
+                                                          Get.toNamed(Routes
+                                                              .QUICK_BOOKING_PAGE);
+                                                        }),
+                                                    HomeComponent.homeButtons(
+                                                        btnText: "StandUp.B",
+                                                        color: Colors.deepOrange
+                                                            .shade700,
+                                                        onTap: () {
+                                                          Get.toNamed(Routes
+                                                              .STANDUP_PAGE);
+                                                        }),
+                                                  ],
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      ));
+    });
+    return list;
   }
 }
