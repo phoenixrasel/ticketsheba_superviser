@@ -1,8 +1,10 @@
 import 'package:get/get.dart';
 
 import 'package:flutter/material.dart';
+import 'package:ticketsheba_superviser/app/data/services/repository.dart';
+import 'package:ticketsheba_superviser/global/global_alert/global_snackbar.dart';
 
-
+import '../../../routes/app_pages.dart';
 
 class StandupPageController extends GetxController {
   Map<String, TextEditingController> inputs = {
@@ -11,9 +13,27 @@ class StandupPageController extends GetxController {
     "phone": TextEditingController(),
   };
 
+  var tripData = Get.arguments as Map<String, dynamic>;
+
   RxBool isSubmitting = false.obs;
   submitTicket() async {
-    
+    isSubmitting(true);
+    try {
+      Repository().submitStandUp(tripData['id'], {
+        "payment": inputs['payment']!.text.toString(),
+        "passenger_name": inputs['name']!.text.toString(),
+        "passenger_phone": inputs['phone']!.text.toString()
+      }).then((value) {
+        isSubmitting(false);
+        if (value['type'] == "success") {
+          GlobalSnackbar.success(msg: value['message']);
+          Get.offNamed(Routes.TICKET_DETAILS_PAGE,
+              arguments: {"id": value['data']['id']});
+        } else {
+          GlobalSnackbar.error(msg: value['message']);
+        }
+      });
+    } on Exception catch (e) {}
   }
 
   @override
@@ -30,5 +50,4 @@ class StandupPageController extends GetxController {
   void onClose() {
     super.onClose();
   }
-
 }

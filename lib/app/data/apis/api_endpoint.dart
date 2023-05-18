@@ -5,8 +5,12 @@ class AppUrl {
   static String LOGOUT_URL = "/customer-logout";
 
   static String ALL_ROUTES_URL = "/route";
-  static String TRIP_LIST_URL = "/trip/list";
-  static String BOOKING_CREATE_URL = "/customer-booking/create";
+  static String TRIP_LIST_URL = "/supervisor/booking/trip-list";
+  static String BOOKING_CREATE_URL(id) => "/supervisor/booking/create/${id}";
+  static String STANDUP_BOOKING_CREATE_URL(id) =>
+      "/company/ticket/${id}/standup/create";
+  static String QUICK_CREATE_URL(id) => "/supervisor/booking/create-quick/$id";
+
 
   static String CUSTOMER_TICKET_SMS_URL = "/customer-ticket-sms";
   static String SHOW_MY_TICKET_URL = "/customer-ticket";

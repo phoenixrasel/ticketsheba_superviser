@@ -42,6 +42,33 @@ class Repository extends ApiProviders {
       method: Method.GET,
       map: {}).then((value) => value);
 
+  Future<dynamic> submitStandUp(id, Map<String, dynamic> body) async =>
+      await tokenBaseApi(
+              endPoint: AppUrl.STANDUP_BOOKING_CREATE_URL(id),
+              method: Method.POST,
+              map: body)
+          .then((value) => value);
+
+  Future<dynamic> submitQuick(id, Map<String, dynamic> body) async =>
+      await tokenBaseApi(
+              endPoint: AppUrl.QUICK_CREATE_URL(id),
+              method: Method.POST,
+              map: body)
+          .then((value) => value);
+
+  Future<dynamic> getBusSeats({required int id}) async => await tokenBaseApi(
+      endPoint: AppUrl.BOOKING_CREATE_URL(id),
+      method: Method.GET,
+      map: {}).then((value) => value);
+
+  Future<dynamic> createBooking(
+          {required int id, required Map<String, dynamic> map}) async =>
+      await tokenBaseApi(
+              endPoint: AppUrl.BOOKING_CREATE_URL(id),
+              method: Method.POST,
+              map: map)
+          .then((value) => value);
+
   /*
   body map
   {
@@ -79,12 +106,6 @@ class Repository extends ApiProviders {
     "payment_status": "unpaid"
   }
   */
-  Future<dynamic> createBooking({required Map<String, dynamic> map}) async =>
-      await tokenBaseApi(
-              endPoint: AppUrl.BOOKING_CREATE_URL,
-              method: Method.POST,
-              map: map)
-          .then((value) => value);
 
   Future<dynamic> submitCustomerTicketSMS(
           {required String ticketNumber,

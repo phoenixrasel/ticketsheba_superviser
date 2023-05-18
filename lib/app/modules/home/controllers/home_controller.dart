@@ -58,9 +58,8 @@ class HomeController extends GetxController {
     try {
       getRouteState(ApiCallState.FETCHING);
       await Repository().getAllRoutes().then((response) {
-        print("response==> $response");
         // routeList(response as List<dynamic>);
-        busData.value = response['data'];
+        busData(response['assign_trips']['data'] as List<dynamic>);
         // from.clear();
         // to.clear();
         // for (dynamic obj in routeList) {

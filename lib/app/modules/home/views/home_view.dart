@@ -102,9 +102,10 @@ class HomeView extends GetView<HomeController> {
                   Obx(
                     () => controller.getRouteState == ApiCallState.FETCHING
                         ? GlobalLoadng.loadingOnly()
-                        : SingleChildScrollView(
-                            child: Column(
-                                children: getTripList()),
+                        : Expanded(
+                            child: SingleChildScrollView(
+                              child: Column(children: getTripList()),
+                            ),
                           ),
                   ),
                 ],
@@ -120,91 +121,89 @@ class HomeView extends GetView<HomeController> {
     List<Widget> list = [];
     controller.busData.forEach((element) {
       list.add(Card(
-                                        child: Container(
-                                          padding: EdgeInsets.all(12),
-                                          child: Row(
-                                            children: [
-                                              Container(
-                                                  width: 50,
-                                                  child: Text("15 May, 23")),
-                                              SizedBox(
-                                                width: 12,
-                                              ),
-                                              Container(
-                                                  width: 70,
-                                                  child: Text("Dhaka-to-Feni")),
-                                              SizedBox(
-                                                width: 12,
-                                              ),
-                                              Container(
-                                                  width: 40,
-                                                  child: Text("non-ac")),
-                                              SizedBox(
-                                                width: 12,
-                                              ),
-                                              Container(
-                                                  width: 60,
-                                                  child: Text("02:00 AM")),
-                                              SizedBox(
-                                                width: 12,
-                                              ),
-                                              Container(
-                                                  width: 50,
-                                                  child: Text("534534")),
-                                              SizedBox(
-                                                width: 12,
-                                              ),
-                                              Container(
-                                                  width: 50,
-                                                  child: Text("400")),
-                                              SizedBox(
-                                                width: 12,
-                                              ),
-                                              Container(
-                                                  alignment: Alignment.center,
-                                                  width: 50,
-                                                  child: Text("41")),
-                                              SizedBox(
-                                                width: 12,
-                                              ),
-                                              Container(
-                                                width: 250,
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceEvenly,
-                                                  children: [
-                                                    HomeComponent.homeButtons(
-                                                        btnText: "Booking",
-                                                        color:
-                                                            Colors.deepPurple,
-                                                        onTap: () {
-                                                          Get.toNamed(Routes
-                                                              .BOOKING_PAGE);
-                                                        }),
-                                                    HomeComponent.homeButtons(
-                                                        btnText: "Quick.B",
-                                                        color: Colors
-                                                            .yellow.shade800,
-                                                        onTap: () {
-                                                          Get.toNamed(Routes
-                                                              .QUICK_BOOKING_PAGE);
-                                                        }),
-                                                    HomeComponent.homeButtons(
-                                                        btnText: "StandUp.B",
-                                                        color: Colors.deepOrange
-                                                            .shade700,
-                                                        onTap: () {
-                                                          Get.toNamed(Routes
-                                                              .STANDUP_PAGE);
-                                                        }),
-                                                  ],
-                                                ),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                      ));
+        child: Container(
+          padding: EdgeInsets.all(12),
+          child: Row(
+            children: [
+              Container(width: 50, child: Text("${element['assign_date']}")),
+              SizedBox(
+                width: 12,
+              ),
+              Container(
+                  width: 70,
+                  child:
+                      Text("${element['trip']['title'].split(" / ").first}")),
+              SizedBox(
+                width: 12,
+              ),
+              Container(
+                  width: 40, child: Text("${element['trip']['bus_type']}")),
+              SizedBox(
+                width: 12,
+              ),
+              Container(
+                  width: 60,
+                  child: Text("${element['trip']['departure_time']}")),
+              SizedBox(
+                width: 12,
+              ),
+              Container(
+                  width: 50, child: Text("${element['trip']['coach_no']}")),
+              SizedBox(
+                width: 12,
+              ),
+              Container(width: 50, child: Text("${element['trip']['price']}")),
+              SizedBox(
+                width: 12,
+              ),
+              Container(
+                  alignment: Alignment.center,
+                  width: 50,
+                  child: Text(
+                      "${element['trip']['fleet']['seats'] - element['sold_ticket'].length}")),
+              SizedBox(
+                width: 12,
+              ),
+              Container(
+                width: 250,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    HomeComponent.homeButtons(
+                        btnText: "Booking",
+                        color: Colors.deepPurple,
+                        onTap: () {
+                          // Get.toNamed(Routes.BOOKING_PAGE);
+                          Get.toNamed(Routes.SEAT_DETAILS, arguments: {
+                            "book-type": "normal",
+                            'tirp-id': element['id'],
+                            'trip': element,
+                          });
+                        }),
+                    HomeComponent.homeButtons(
+                        btnText: "Quick.B",
+                        color: Colors.yellow.shade800,
+                        onTap: () {
+                          // Get.toNamed(Routes.QUICK_BOOKING_PAGE);
+                          Get.toNamed(Routes.SEAT_DETAILS, arguments: {
+                            "book-type": "quick",
+                            'tirp-id': element['id'],
+                            'trip': element,
+                          });
+                        }),
+                    HomeComponent.homeButtons(
+                        btnText: "StandUp.B",
+                        color: Colors.deepOrange.shade700,
+                        onTap: () {
+                          Get.toNamed(Routes.STANDUP_PAGE, arguments: element);
+                        }),
+                  ],
+                ),
+              )
+            ],
+          ),
+        ),
+      ));
     });
     return list;
   }

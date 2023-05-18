@@ -10,12 +10,16 @@ import '../modules/login/bindings/login_binding.dart';
 import '../modules/login/views/login_view.dart';
 import '../modules/quick_booking_page/bindings/quick_booking_page_binding.dart';
 import '../modules/quick_booking_page/views/quick_booking_page_view.dart';
+import '../modules/seat_details/bindings/seat_details_binding.dart';
+import '../modules/seat_details/views/seat_details_view.dart';
 import '../modules/splash_screen/bindings/splash_screen_binding.dart';
 import '../modules/splash_screen/views/splash_screen_view.dart';
 import '../modules/stand_up/bindings/stand_up_binding.dart';
 import '../modules/stand_up/views/stand_up_view.dart';
 import '../modules/standup_page/bindings/standup_page_binding.dart';
 import '../modules/standup_page/views/standup_page_view.dart';
+import '../modules/ticket_details_page/bindings/ticket_details_page_binding.dart';
+import '../modules/ticket_details_page/views/ticket_details_page_view.dart';
 
 part 'app_routes.dart';
 
@@ -64,6 +68,16 @@ class AppPages {
       name: _Paths.STANDUP_PAGE,
       page: () => const StandupPageView(),
       binding: StandupPageBinding(),
+    ),
+    GetPage(
+      name: _Paths.TICKET_DETAILS_PAGE,
+      page: () => const TicketDetailsPageView(),
+      binding: TicketDetailsPageBinding(),
+    ),
+    GetPage(
+      name: _Paths.SEAT_DETAILS,
+      page: () => const SeatDetailsView(),
+      binding: SeatDetailsBinding(),
     ),
   ];
 }

@@ -11,6 +11,8 @@ abstract class Routes {
   static const STAND_UP = _Paths.STAND_UP;
   static const CONFIRM_PAGE = _Paths.CONFIRM_PAGE;
   static const STANDUP_PAGE = _Paths.STANDUP_PAGE;
+  static const TICKET_DETAILS_PAGE = _Paths.TICKET_DETAILS_PAGE;
+  static const SEAT_DETAILS = _Paths.SEAT_DETAILS;
 }
 
 abstract class _Paths {
@@ -23,4 +25,6 @@ abstract class _Paths {
   static const STAND_UP = '/stand-up';
   static const CONFIRM_PAGE = '/confirm-page';
   static const STANDUP_PAGE = '/standup-page';
+  static const TICKET_DETAILS_PAGE = '/ticket-details-page';
+  static const SEAT_DETAILS = '/seat-details';
 }
