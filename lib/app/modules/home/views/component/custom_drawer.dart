@@ -78,7 +78,7 @@ class CustomDrawer {
                         Pref.removeData(key: Pref.SESSION);
                         // Get.back();
                         GlobalSnackbar.success(msg: "Logout success");
-                        Get.offAllNamed(Routes.HOME);
+                        Get.offAllNamed(Routes.LOGIN);
                       });
                 })
               : Container()),

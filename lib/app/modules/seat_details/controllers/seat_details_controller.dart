@@ -226,12 +226,12 @@ class SeatDetailsController extends GetxController {
            */
       for (int rightColumn = (leftSeatCount.value +
               (seats.length * 3) +
-              (lastSeatCount == 1 ? 1 : 0));
+              (lastSeatCount == 1 && row == totalRow - 1 ? 1 : 0));
           rightColumn <
               (rightSeatCount.value +
                   leftSeatCount.value +
                   (seats.length * 3) +
-                  (lastSeatCount == 1 ? 1 : 0));
+                  (lastSeatCount == 1 && row == totalRow - 1 ? 1 : 0));
           rightColumn++) {
         columns.add({
           "seat-name": "${seatNumber[row + rightColumn]}",

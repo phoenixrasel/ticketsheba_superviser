@@ -63,7 +63,7 @@ class StandupPageView extends GetView<StandupPageController> {
                   ? GlobalLoadng.loadingOnly(
                       color: Theme.of(context).colorScheme.primary)
                   : GlobalButton.btn(
-                      text: "Sign In",
+                      text: "Buy",
                       onTap: () {
                         if (controller.inputs['payment']!.text.isEmpty) {
                           GlobalSnackbar.error(msg: "Enter payment amount");
