@@ -10,6 +10,7 @@ import '../../../../global/global_alert/global_snackbar.dart';
 import '../../../../global/widget/global_btn.dart';
 import '../../../../global/widget/global_loading.dart';
 import '../../../../global/widget/global_text_style.dart';
+import '../../../routes/app_pages.dart';
 import '../controllers/seat_details_controller.dart';
 
 class SeatDetailsView extends GetView<SeatDetailsController> {
@@ -157,7 +158,30 @@ class SeatDetailsView extends GetView<SeatDetailsController> {
                               if (controller.bookType == "quick") {
                                 controller.submitQuickBook();
                               } else {
-                                showSubmitAlert(controller: controller);
+                                Get.toNamed(Routes.BOOKING_PAGE, arguments: {
+                                  "ticket_id": controller.tripId,
+                                  "data": {
+                                    "seats": selectedSeatName(),
+                                    "unit_fair": controller.price.value,
+                                    'total_fair': controller.total.value,
+                                    'grand_total': controller.total.value,
+                                    'payment_amount': controller.total.value,
+                                    'payment_method': '',
+                                    'payment_status': '',
+                                    "name": "",
+                                    "phone": "",
+                                    "unit_special_fair": 0,
+                                    "discount": 0.0,
+                                    "due_amount": 0.0,
+                                    "passenger_name": "",
+                                    "passenger_phone": "",
+                                    "passenger_email": "",
+                                    "passenger_address": "",
+                                    "boarding_point": "",
+                                    "dropping_point": ""
+                                  }
+                                });
+                                // showSubmitAlert(controller: controller);
                               }
                             }),
                       ],
