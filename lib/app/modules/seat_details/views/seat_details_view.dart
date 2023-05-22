@@ -160,6 +160,8 @@ class SeatDetailsView extends GetView<SeatDetailsController> {
                               } else {
                                 Get.toNamed(Routes.BOOKING_PAGE, arguments: {
                                   "ticket_id": controller.tripId,
+                                  "bording-point": controller.boardingPoint,
+                                  "droping-point": controller.dropingPoint,
                                   "data": {
                                     "seats": selectedSeatName(),
                                     "unit_fair": controller.price.value,
