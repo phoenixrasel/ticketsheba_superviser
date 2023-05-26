@@ -69,6 +69,7 @@ class SeatDetailsController extends GetxController {
         /**
          * add boarding points
          */
+        print("boarind -> ${value['trip']['boarding_points']}");
         value['trip']['boarding_points'].forEach((element) {
           boardingPoint.add(element['boarding_point']);
         });
@@ -111,16 +112,18 @@ class SeatDetailsController extends GetxController {
 
     List<dynamic> bookedSeats = soldList;
     /**
-         * Calculating row
-         */
+     * Calculating row
+     */
+    print("sold list -> ${soldList}");
     for (int row = 0; row < totalRow; row++) {
       /**
-           * Calculating left column
-           */
+       * Calculating left column
+       */
       List<Map<String, dynamic>> columns = [];
       for (int leftColumn = (specialSeats.length * 3);
           leftColumn < ((specialSeats.length * 3) + specialLeftSeatCount.value);
           leftColumn++) {
+        print("hello seat -> ${specialSeatNumber[row + leftColumn]}");
         columns.add({
           "seat-name": "${specialSeatNumber[row + leftColumn]}",
           "is-selected": false,
@@ -236,7 +239,8 @@ class SeatDetailsController extends GetxController {
         columns.add({
           "seat-name": "${seatNumber[row + rightColumn]}",
           "is-selected": false,
-          "is-booked": bookedSeats.contains("${seatNumber[row + rightColumn]}"),
+          "is-booked": bookedSeats.contains(
+              "${seatNumber[row + rightColumn].replaceAll("[", "").replaceAll("]", "")}"),
           "price": value['price'],
         });
       }

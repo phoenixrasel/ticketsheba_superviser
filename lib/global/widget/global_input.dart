@@ -11,6 +11,7 @@ class GlobalInput {
           String? hint,
           Widget? suffixIcon,
           bool? isObsecure,
+          bool enable = true,
           TextInputType? inputType}) =>
       Container(
         height: 76,
@@ -26,6 +27,7 @@ class GlobalInput {
             Container(
               margin: EdgeInsets.only(top: 5),
               decoration: BoxDecoration(
+                  color: enable ? Colors.white : Colors.grey.shade300,
                   borderRadius: BorderRadius.circular(4),
                   border: Border.all(color: ExtraColors.BLACK_400, width: .8)),
               padding: EdgeInsets.symmetric(horizontal: 12),
@@ -36,6 +38,7 @@ class GlobalInput {
                       controller: controller,
                       obscureText: isObsecure ?? false,
                       keyboardType: inputType,
+                      enabled: enable,
                       style: TextStyle(color: ExtraColors.BLACK_500),
                       decoration: InputDecoration(
                           border: InputBorder.none, hintText: hint),

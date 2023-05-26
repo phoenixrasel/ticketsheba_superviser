@@ -64,7 +64,7 @@ class Repository extends ApiProviders {
   Future<dynamic> createBooking(
           {required int id, required Map<String, dynamic> map}) async =>
       await tokenBaseApi(
-              endPoint: AppUrl.BOOKING_CREATE_URL(id),
+              endPoint: AppUrl.BOOKING_CREATE_URL2(id),
               method: Method.POST,
               map: map)
           .then((value) => value);

@@ -7,6 +7,7 @@ class AppUrl {
   static String ALL_ROUTES_URL = "/route";
   static String TRIP_LIST_URL = "/supervisor/booking/trip-list";
   static String BOOKING_CREATE_URL(id) => "/supervisor/booking/create/${id}";
+  static String BOOKING_CREATE_URL2(id) => "/supervisor/booking/store/${id}";
   static String STANDUP_BOOKING_CREATE_URL(id) =>
       "/company/ticket/${id}/standup/create";
   static String QUICK_CREATE_URL(id) => "/supervisor/booking/create-quick/$id";

@@ -37,24 +37,29 @@ class BookingPageView extends GetView<BookingPageController> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            ticketView(),
+            // ticketView(),
             SizedBox(
               height: 12,
             ),
             inputUserInfo(),
-            Obx(
-              () => controller.isSubmitting.value
-                  ? GlobalLoadng.loadingOnly(
-                      color: Theme.of(Get.context!).colorScheme.primary)
-                  : GlobalButton.btn(
-                      text: "Buy",
-                      onTap: () {
-                        if (controller.inputs['payment']!.text.isEmpty) {
-                          GlobalSnackbar.error(msg: "Enter payment amount");
-                        } else {
-                          controller.submitQuickBook();
-                        }
-                      }),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 24),
+              child: Obx(
+                () => controller.isSubmitting.value
+                    ? GlobalLoadng.loadingOnly(
+                        color: Theme.of(Get.context!).colorScheme.primary)
+                    : GlobalButton.btn(
+                        text: "Buy",
+                        onTap: () {
+                          if (controller.inputs['name']!.text.isEmpty) {
+                            GlobalSnackbar.error(msg: "Enter name");
+                          } else if (controller.inputs['phone']!.text.isEmpty) {
+                            GlobalSnackbar.error(msg: "Enter phone");
+                          } else {
+                            showSubmitAlert(controller: controller);
+                          }
+                        }),
+              ),
             ),
             SizedBox(
               height: AppDimens.breatingSpace,
@@ -93,26 +98,104 @@ class BookingPageView extends GetView<BookingPageController> {
               ),
               content: Container(
                 width: Get.width,
-                height: 170,
-                child: Column(
-                  children: [
-                    GlobalInput.inputField(
-                        controller: controller.inputs['total-fair']!,
-                        headerText: "Total fair"),
-                    GlobalInput.inputField(
-                        controller: controller.inputs['discount']!,
-                        headerText: "Discount"),
-                    GlobalInput.inputField(
-                        controller: controller.inputs['grand-total']!,
-                        headerText: "Grand Total"),
-                    GlobalInput.inputField(
-                        controller: controller.inputs['payment-amount']!,
-                        headerText: "Payment Amount"),
-                        GlobalInput.inputField(
-                        controller: controller.inputs['payment-amount']!,
-                        headerText: "Payment Amount"),
-                        
-                  ],
+                height: Get.height - 400,
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      GlobalInput.inputField(
+                          enable: false,
+                          controller: controller.inputs['total-fair']!,
+                          headerText: "Total fair"),
+                      GlobalInput.inputField(
+                          controller: controller.inputs['discount']!,
+                          headerText: "Discount"),
+                      GlobalInput.inputField(
+                          enable: false,
+                          controller: controller.inputs['grand-total']!,
+                          headerText: "Grand Total"),
+                      GlobalInput.inputField(
+                          controller: controller.inputs['payment-amount']!,
+                          headerText: "Payment Amount"),
+                      GlobalInput.inputField(
+                          enable: false,
+                          controller: controller.inputs['due-amount']!,
+                          headerText: "Due Amount"),
+                      Container(
+                        height: 76,
+                        margin:
+                            EdgeInsets.only(top: AppDimens.breatingSpace / 2),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("Payment Option",
+                                style: TextStyle(
+                                    color: ExtraColors.BLACK_500,
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: AppDimens.tNormal)),
+                            Obx(() => Container(
+                                  margin: EdgeInsets.only(top: 5),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(4),
+                                      border: Border.all(
+                                          color: ExtraColors.BLACK_400,
+                                          width: .8)),
+                                  padding: EdgeInsets.symmetric(horizontal: 12),
+                                  child: DropdownButtonHideUnderline(
+                                    child: DropdownButton(
+                                        isExpanded: true,
+                                        value: controller
+                                            .selectedPaymentOption.value,
+                                        items: controller.paymentOption
+                                            .map((e) => DropdownMenuItem(
+                                                value: e, child: Text(e)))
+                                            .toList(),
+                                        onChanged: (value) {
+                                          controller.updatePaymentOption(value);
+                                        }),
+                                  ),
+                                )),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        height: 76,
+                        margin:
+                            EdgeInsets.only(top: AppDimens.breatingSpace / 2),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("Payment Status",
+                                style: TextStyle(
+                                    color: ExtraColors.BLACK_500,
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: AppDimens.tNormal)),
+                            Obx(() => Container(
+                                  margin: EdgeInsets.only(top: 5),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(4),
+                                      border: Border.all(
+                                          color: ExtraColors.BLACK_400,
+                                          width: .8)),
+                                  padding: EdgeInsets.symmetric(horizontal: 12),
+                                  child: DropdownButtonHideUnderline(
+                                    child: DropdownButton(
+                                        isExpanded: true,
+                                        value: controller
+                                            .selectedPaymentStatus.value,
+                                        items: controller.paymentStatus
+                                            .map((e) => DropdownMenuItem(
+                                                value: e, child: Text(e)))
+                                            .toList(),
+                                        onChanged: (value) {
+                                          controller.updatePaymentStatus(value);
+                                        }),
+                                  ),
+                                )),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
               actions: [
@@ -124,6 +207,8 @@ class BookingPageView extends GetView<BookingPageController> {
                       child: GlobalButton.btn(
                           text: "Continue",
                           onTap: () {
+                            Get.back();
+                            controller.setAndSubmit();
                             // if (controller.inputs['droping']!.text.isEmpty) {
                             //   GlobalSnackbar.error(msg: "Enter droping point");
                             // } else if (controller
@@ -184,24 +269,23 @@ class BookingPageView extends GetView<BookingPageController> {
             borderRadius: BorderRadius.circular(6)),
         child: Column(children: [
           Container(
-            height: 24,
+            height: 64,
             alignment: Alignment.center,
             decoration: BoxDecoration(
               color: Theme.of(Get.context!).colorScheme.primary,
               borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(6), topRight: Radius.circular(6)),
             ),
-            child: Text("Passenger Info"),
+            child:
+                Text("Passenger Info", style: TextStyle(color: Colors.white)),
           ),
           SizedBox(
             height: 15,
           ),
           GlobalInput.inputField(
-              controller: controller.inputs['name']!,
-              headerText: "Name (Optional)"),
+              controller: controller.inputs['name']!, headerText: "Name"),
           GlobalInput.inputField(
-              controller: controller.inputs['phone']!,
-              headerText: "Phone (Optional)"),
+              controller: controller.inputs['phone']!, headerText: "Phone "),
           GlobalInput.inputField(
               controller: controller.inputs['email']!,
               headerText: "Email (Optional)"),
@@ -247,45 +331,56 @@ class BookingPageView extends GetView<BookingPageController> {
         ]),
       );
 
-  ticketView() => Container(
-        margin: EdgeInsets.all(24),
-        padding: EdgeInsets.all(12),
-        decoration: BoxDecoration(
-            color: Colors.white,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.shade200,
-                blurRadius: 6,
-                offset: Offset.zero,
-                spreadRadius: 2,
-              )
-            ],
-            borderRadius: BorderRadius.circular(6)),
-        child: Column(children: [
-          Container(
-            height: 24,
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              color: Theme.of(Get.context!).colorScheme.primary,
-              borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(6), topRight: Radius.circular(6)),
-            ),
-            child: Text("STAND UP TICKET BOOKING"),
-          ),
-          SizedBox(
-            height: 15,
-          ),
-          GlobalInput.inputField(
-              controller: controller.inputs['payment']!, headerText: "Payment"),
-          GlobalInput.inputField(
-              controller: controller.inputs['name']!,
-              headerText: "Name (Optional)"),
-          GlobalInput.inputField(
-              controller: controller.inputs['phone']!,
-              headerText: "Phone (Optional)"),
-          SizedBox(
-            height: AppDimens.paddingExtraGaint,
-          ),
-        ]),
-      );
+  // ticketView() => Container(
+  //       margin: EdgeInsets.all(24),
+  //       padding: EdgeInsets.all(12),
+  //       decoration: BoxDecoration(
+  //           color: Colors.white,
+  //           boxShadow: [
+  //             BoxShadow(
+  //               color: Colors.grey.shade200,
+  //               blurRadius: 6,
+  //               offset: Offset.zero,
+  //               spreadRadius: 2,
+  //             )
+  //           ],
+  //           borderRadius: BorderRadius.circular(6)),
+  //       child: Column(children: [
+  //         Container(
+  //           height: 24,
+  //           alignment: Alignment.center,
+  //           decoration: BoxDecoration(
+  //             color: Theme.of(Get.context!).colorScheme.primary,
+  //             borderRadius: BorderRadius.only(
+  //                 topLeft: Radius.circular(6), topRight: Radius.circular(6)),
+  //           ),
+  //           child: Text("Payment Information"),
+  //         ),
+  //         SizedBox(
+  //           height: 15,
+  //         ),
+  //         GlobalInput.inputField(
+  //             controller: controller.inputs['payment']!, headerText: "Payment"),
+  //         GlobalInput.inputField(
+  //             controller: controller.inputs['discount']!,
+  //             headerText: "Discount"),
+  //         GlobalInput.inputField(
+  //             controller: controller.inputs['grand-total']!,
+  //             headerText: "Grand Total"),
+  //         GlobalInput.inputField(
+  //             controller: controller.inputs['payment-amount']!,
+  //             headerText: "Payment Amount"),
+  //         GlobalInput.inputField(
+  //             controller: controller.inputs['grand-total']!,
+  //             headerText: "Due Amount"),
+  //         DropdownButton(
+  //             items: controller.paymentOption
+  //                 .map((e) => DropdownMenuItem(value: e, child: Text(e)))
+  //                 .toList(),
+  //             onChanged: (value) {}),
+  //         SizedBox(
+  //           height: AppDimens.paddingExtraGaint,
+  //         ),
+  //       ]),
+  //     );
 }

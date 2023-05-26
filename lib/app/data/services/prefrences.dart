@@ -15,6 +15,7 @@ class Pref {
   static var IS_PASS_UPDATE = 'is-pass-update';
   static var IS_NEW_APP_LOGIN = 'is-new-app-login';
   static var IS_FCM_TOKEN_SAVE = 'is-fcm-token-save';
+  static var btDeviceName = "device-name";
 
   static void writeData({required String key, required dynamic value}) =>
       box.write(key, value);

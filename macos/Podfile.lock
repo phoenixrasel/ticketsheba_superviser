@@ -1,0 +1,72 @@
+PODS:
+  - blue_thermal_printer (0.0.1):
+    - FlutterMacOS
+  - device_info_plus_macos (0.0.1):
+    - FlutterMacOS
+  - FlutterMacOS (1.0.0)
+  - package_info_plus (0.0.1):
+    - FlutterMacOS
+  - path_provider_foundation (0.0.1):
+    - Flutter
+    - FlutterMacOS
+  - pdfx (1.0.0):
+    - FlutterMacOS
+  - platform_device_id (0.0.1):
+    - FlutterMacOS
+  - platform_device_id_macos (0.0.1):
+    - FlutterMacOS
+  - shared_preferences_foundation (0.0.1):
+    - Flutter
+    - FlutterMacOS
+  - url_launcher_macos (0.0.1):
+    - FlutterMacOS
+
+DEPENDENCIES:
+  - blue_thermal_printer (from `Flutter/ephemeral/.symlinks/plugins/blue_thermal_printer/macos`)
+  - device_info_plus_macos (from `Flutter/ephemeral/.symlinks/plugins/device_info_plus_macos/macos`)
+  - FlutterMacOS (from `Flutter/ephemeral`)
+  - package_info_plus (from `Flutter/ephemeral/.symlinks/plugins/package_info_plus/macos`)
+  - path_provider_foundation (from `Flutter/ephemeral/.symlinks/plugins/path_provider_foundation/macos`)
+  - pdfx (from `Flutter/ephemeral/.symlinks/plugins/pdfx/macos`)
+  - platform_device_id (from `Flutter/ephemeral/.symlinks/plugins/platform_device_id/macos`)
+  - platform_device_id_macos (from `Flutter/ephemeral/.symlinks/plugins/platform_device_id_macos/macos`)
+  - shared_preferences_foundation (from `Flutter/ephemeral/.symlinks/plugins/shared_preferences_foundation/macos`)
+  - url_launcher_macos (from `Flutter/ephemeral/.symlinks/plugins/url_launcher_macos/macos`)
+
+EXTERNAL SOURCES:
+  blue_thermal_printer:
+    :path: Flutter/ephemeral/.symlinks/plugins/blue_thermal_printer/macos
+  device_info_plus_macos:
+    :path: Flutter/ephemeral/.symlinks/plugins/device_info_plus_macos/macos
+  FlutterMacOS:
+    :path: Flutter/ephemeral
+  package_info_plus:
+    :path: Flutter/ephemeral/.symlinks/plugins/package_info_plus/macos
+  path_provider_foundation:
+    :path: Flutter/ephemeral/.symlinks/plugins/path_provider_foundation/macos
+  pdfx:
+    :path: Flutter/ephemeral/.symlinks/plugins/pdfx/macos
+  platform_device_id:
+    :path: Flutter/ephemeral/.symlinks/plugins/platform_device_id/macos
+  platform_device_id_macos:
+    :path: Flutter/ephemeral/.symlinks/plugins/platform_device_id_macos/macos
+  shared_preferences_foundation:
+    :path: Flutter/ephemeral/.symlinks/plugins/shared_preferences_foundation/macos
+  url_launcher_macos:
+    :path: Flutter/ephemeral/.symlinks/plugins/url_launcher_macos/macos
+
+SPEC CHECKSUMS:
+  blue_thermal_printer: 74a7de823607346bfc38c05e171a2925edfd1c4a
+  device_info_plus_macos: 1ad388a1ef433505c4038e7dd9605aadd1e2e9c7
+  FlutterMacOS: 8f6f14fa908a6fb3fba0cd85dbd81ec4b251fb24
+  package_info_plus: 02d7a575e80f194102bef286361c6c326e4c29ce
+  path_provider_foundation: eaf5b3e458fc0e5fbb9940fb09980e853fe058b8
+  pdfx: d1c406047b02acc54fe98495ae24b04fe9b4f024
+  platform_device_id: 3e414428f45df149bbbfb623e2c0ca27c545b763
+  platform_device_id_macos: f763bb55f088be804d61b96eb4710b8ab6598e94
+  shared_preferences_foundation: e2dae3258e06f44cc55f49d42024fd8dd03c590c
+  url_launcher_macos: 5335912b679c073563f29d89d33d10d459f95451
+
+PODFILE CHECKSUM: 353c8bcc5d5b0994e508d035b5431cfe18c1dea7
+
+COCOAPODS: 1.12.0
