@@ -352,6 +352,58 @@ class TicketDetailsPageController extends GetxController {
     });
   }
 
+void ticketPrint() {
+    bluetooth.printCustom("Star Line", 2, 1, charset: "windows-1250");
+    bluetooth.printCustom("Dhaka to Feni", 0, 1, charset: "windows-1250");
+    bluetooth.printCustom("26 May, 2023", 1, 0);
+    bluetooth.printCustom("*********************", 0, 1,
+        charset: "windows-1250");
+    bluetooth.printCustom("Ticket Info: 3153215454", 0, 1,
+        charset: "windows-1250");
+    bluetooth.printCustom("*********************", 0, 1,
+        charset: "windows-1250");
+    bluetooth.printCustom("Ticket No: 3153215454", 0, 1,
+        charset: "windows-1250");
+    bluetooth.printCustom("Coach No: 2135432163", 0, 1,
+        charset: "windows-1250");
+    bluetooth.printCustom("Departure Time: 02.00 AM", 0, 1,
+        charset: "windows-1250");
+    bluetooth.printCustom("Arrival Time: 07.00 AM", 0, 1,
+        charset: "windows-1250");
+    bluetooth.printCustom("Bording Point: TT.para - 2.00 AM", 0, 1,
+        charset: "windows-1250");
+    bluetooth.printCustom("Dropping Point: Tong Road - 7.00 AM", 0, 1,
+        charset: "windows-1250");
+    bluetooth.printCustom("Issue Date: 26 May, 2023'", 1, 0);
+  }
+
+  void seatDetails() {
+    bluetooth.printCustom("*********************", 0, 1,
+        charset: "windows-1250");
+    bluetooth.printCustom("Seat Details", 0, 1, charset: "windows-1250");
+    bluetooth.printCustom("*********************", 0, 1,
+        charset: "windows-1250");
+    bluetooth.printCustom("P Name: Rasel", 0, 1, charset: "windows-1250");
+    bluetooth.printCustom("P Phone: 01546654682", 0, 1,
+        charset: "windows-1250");
+    bluetooth.printCustom("Seat No: A1", 0, 1, charset: "windows-1250");
+    bluetooth.printCustom("Total Seats: 1", 0, 1, charset: "windows-1250");
+  }
+
+  void paymentDetails() {
+    bluetooth.printCustom("*********************", 0, 1,
+        charset: "windows-1250");
+    bluetooth.printCustom("Payment Details", 0, 1, charset: "windows-1250");
+    bluetooth.printCustom("*********************", 0, 1,
+        charset: "windows-1250");
+    bluetooth.printCustom("Seat Fare (400 X 1): BDT 400", 0, 1,
+        charset: "windows-1250");
+    bluetooth.printCustom("(+) Service Charge: BDT 0", 0, 1,
+        charset: "windows-1250");
+    bluetooth.printCustom("(-) Discount: BDT 0", 0, 1, charset: "windows-1250");
+    bluetooth.printCustom("Grand Total: BDT 0", 0, 1, charset: "windows-1250");
+  }
+
   void disconnectNow() {
     bluetooth.disconnect();
     connected.value = false;
