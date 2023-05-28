@@ -17,4 +17,5 @@ extension StringListExt<String> on List<String> {
 
 extension DateTimeFormat on DateTime {
   String get ddMMyyyy => DateFormat("dd/MM/yyyy").format(this);
+  String dateFormat(String format) => DateFormat(format).format(this);
 }

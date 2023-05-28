@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:pdfx/pdfx.dart';
+import 'package:ticketsheba_superviser/core/extensions/extensions.dart';
 import 'package:ticketsheba_superviser/global/widget/global_loading.dart';
 
 import '../../../../core/extra/app_assets.dart';
@@ -87,338 +88,388 @@ class TicketDetailsPageView extends GetView<TicketDetailsPageController> {
                           )
                         ],
                       );
-              })
-            ,SizedBox(height: 12),
-            Padding(
-        padding: const EdgeInsets.only(top: 24.0),
-        child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Center(
+              }),
+              SizedBox(height: 12),
+              Padding(
+                padding: const EdgeInsets.only(top: 24.0),
                 child: Column(
-                  children: [
-                    Text(
-                      'Star Line',
-                      style:
-                          TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                    ),
-                    Text('Dhaka to Feni',
-                        style: TextStyle(
-                          fontSize: 18,
-                        )),
-                    Text('26 May, 2023'),
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Column(
-                children: [
-                  DottedLine(
-                    direction: Axis.horizontal,
-                    lineLength: double.infinity,
-                    lineThickness: 1.0,
-                    dashLength: 4.0,
-                    dashColor: Colors.black,
-                    dashGapRadius: 0.0,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text('Ticket Info'),
-                  ),
-                  DottedLine(
-                    direction: Axis.horizontal,
-                    lineLength: double.infinity,
-                    lineThickness: 1.0,
-                    dashLength: 4.0,
-                    dashColor: Colors.black,
-                    dashGapRadius: 0.0,
-                  ),
-                ],
-              ),
-              Container(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      RichText(
-                        text: TextSpan(
-                          style: TextStyle(
-                            color: Colors.black,
-                          ),
-                          children: <TextSpan>[
-                            TextSpan(text: 'Ticket No:  ', style: TextStyle()),
-                            TextSpan(text: '3153215454'),
+                      Center(
+                        child: Column(
+                          children: [
+                            Text(
+                              controller.loginInfo['company']['name'],
+                              style: TextStyle(
+                                  fontSize: 24, fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                                controller.trip['trip']['title']
+                                    .split(" / ")
+                                    .first,
+                                style: TextStyle(
+                                  fontSize: 18,
+                                )),
+                            Text(controller.trip['assign_date']),
                           ],
                         ),
                       ),
-                      RichText(
-                        text: TextSpan(
-                          style: TextStyle(
-                            color: Colors.black,
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Column(
+                        children: [
+                          DottedLine(
+                            direction: Axis.horizontal,
+                            lineLength: double.infinity,
+                            lineThickness: 1.0,
+                            dashLength: 4.0,
+                            dashColor: Colors.black,
+                            dashGapRadius: 0.0,
                           ),
-                          children: <TextSpan>[
-                            TextSpan(text: 'Catch No:  ', style: TextStyle()),
-                            TextSpan(text: '2135432163'),
-                          ],
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text('Ticket Info'),
+                          ),
+                          DottedLine(
+                            direction: Axis.horizontal,
+                            lineLength: double.infinity,
+                            lineThickness: 1.0,
+                            dashLength: 4.0,
+                            dashColor: Colors.black,
+                            dashGapRadius: 0.0,
+                          ),
+                        ],
+                      ),
+                      Container(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              RichText(
+                                text: TextSpan(
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                  ),
+                                  children: <TextSpan>[
+                                    TextSpan(
+                                        text: 'Ticket No:  ',
+                                        style: TextStyle()),
+                                    TextSpan(
+                                        text:
+                                            '${controller.ticketData['ticket_no']}'),
+                                  ],
+                                ),
+                              ),
+                              RichText(
+                                text: TextSpan(
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                  ),
+                                  children: <TextSpan>[
+                                    TextSpan(
+                                        text: 'Catch No:  ',
+                                        style: TextStyle()),
+                                    TextSpan(
+                                        text:
+                                            '${controller.trip['trip']['coach_no']}'),
+                                  ],
+                                ),
+                              ),
+                              RichText(
+                                text: TextSpan(
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                  ),
+                                  children: <TextSpan>[
+                                    TextSpan(
+                                        text: 'Departure Time:  ',
+                                        style: TextStyle()),
+                                    TextSpan(
+                                        text:
+                                            '${controller.trip['trip']['departure_time']}'),
+                                  ],
+                                ),
+                              ),
+                              RichText(
+                                text: TextSpan(
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                  ),
+                                  children: <TextSpan>[
+                                    TextSpan(
+                                        text: 'Arrival Time:  ',
+                                        style: TextStyle()),
+                                    TextSpan(
+                                        text:
+                                            '${controller.trip['trip']['arrival_time']}'),
+                                  ],
+                                ),
+                              ),
+                              RichText(
+                                text: TextSpan(
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                  ),
+                                  children: <TextSpan>[
+                                    TextSpan(
+                                        text: 'Bording Point:  ',
+                                        style: TextStyle()),
+                                    TextSpan(
+                                        text:
+                                            '${controller.data['boarding_point']} - ${controller.getBoardingTime()}'),
+                                  ],
+                                ),
+                              ),
+                              RichText(
+                                text: TextSpan(
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                  ),
+                                  children: <TextSpan>[
+                                    TextSpan(
+                                        text: 'Dropping Point:  ',
+                                        style: TextStyle()),
+                                    TextSpan(
+                                        text:
+                                            '${controller.data['dropping_point']} - ${controller.getDropingTime()}'),
+                                  ],
+                                ),
+                              ),
+                              RichText(
+                                text: TextSpan(
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                  ),
+                                  children: <TextSpan>[
+                                    TextSpan(
+                                        text: 'Issue Date:  ',
+                                        style: TextStyle()),
+                                    TextSpan(
+                                        text: DateTime.now()
+                                            .dateFormat("dd MMM, yyyy")),
+                                  ],
+                                ),
+                              ),
+                              RichText(
+                                text: TextSpan(
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                  ),
+                                  children: <TextSpan>[
+                                    TextSpan(
+                                        text: 'Booked By:  ',
+                                        style: TextStyle()),
+                                    TextSpan(
+                                        text: controller.loginInfo['data']
+                                            ['name']),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                      RichText(
-                        text: TextSpan(
-                          style: TextStyle(
-                            color: Colors.black,
+                      Column(
+                        children: [
+                          DottedLine(
+                            direction: Axis.horizontal,
+                            lineLength: double.infinity,
+                            lineThickness: 1.0,
+                            dashLength: 4.0,
+                            dashColor: Colors.black,
+                            dashGapRadius: 0.0,
                           ),
-                          children: <TextSpan>[
-                            TextSpan(
-                                text: 'Departure Time:  ', style: TextStyle()),
-                            TextSpan(text: '02.00 AM'),
-                          ],
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text('Seat Details'),
+                          ),
+                          DottedLine(
+                            direction: Axis.horizontal,
+                            lineLength: double.infinity,
+                            lineThickness: 1.0,
+                            dashLength: 4.0,
+                            dashColor: Colors.black,
+                            dashGapRadius: 0.0,
+                          ),
+                        ],
+                      ),
+                      Container(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              RichText(
+                                text: TextSpan(
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                  ),
+                                  children: <TextSpan>[
+                                    TextSpan(
+                                        text: 'P Name:  ', style: TextStyle()),
+                                    TextSpan(text: controller.data['name']),
+                                  ],
+                                ),
+                              ),
+                              RichText(
+                                text: TextSpan(
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                  ),
+                                  children: <TextSpan>[
+                                    TextSpan(
+                                        text: 'P Phone:  ', style: TextStyle()),
+                                    TextSpan(text: controller.data['phone']),
+                                  ],
+                                ),
+                              ),
+                              RichText(
+                                text: TextSpan(
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                  ),
+                                  children: <TextSpan>[
+                                    TextSpan(
+                                        text: 'Seat No:  ', style: TextStyle()),
+                                    TextSpan(
+                                        text: controller.data['seats']
+                                            .toString()),
+                                  ],
+                                ),
+                              ),
+                              RichText(
+                                text: TextSpan(
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                  ),
+                                  children: <TextSpan>[
+                                    TextSpan(
+                                        text: 'Total Seats:  ',
+                                        style: TextStyle()),
+                                    TextSpan(
+                                        text:
+                                            "${controller.data['seats'].length}"),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                      RichText(
-                        text: TextSpan(
-                          style: TextStyle(
-                            color: Colors.black,
+                      Column(
+                        children: [
+                          DottedLine(
+                            direction: Axis.horizontal,
+                            lineLength: double.infinity,
+                            lineThickness: 1.0,
+                            dashLength: 4.0,
+                            dashColor: Colors.black,
+                            dashGapRadius: 0.0,
                           ),
-                          children: <TextSpan>[
-                            TextSpan(
-                                text: 'Departure Time:  ', style: TextStyle()),
-                            TextSpan(text: '07.00 AM'),
-                          ],
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text('Payment Details'),
+                          ),
+                          DottedLine(
+                            direction: Axis.horizontal,
+                            lineLength: double.infinity,
+                            lineThickness: 1.0,
+                            dashLength: 4.0,
+                            dashColor: Colors.black,
+                            dashGapRadius: 0.0,
+                          ),
+                        ],
+                      ),
+                      Container(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              RichText(
+                                text: TextSpan(
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                  ),
+                                  children: <TextSpan>[
+                                    TextSpan(
+                                        text:
+                                            'Seat Fare (${controller.trip['trip']['price']} X ${controller.data['seats'].length}):  ',
+                                        style: TextStyle()),
+                                    TextSpan(
+                                        text:
+                                            'BDT ${(double.tryParse("${controller.trip['trip']['price']}") ?? 0.0) * controller.data['seats'].length}'),
+                                  ],
+                                ),
+                              ),
+                              RichText(
+                                text: TextSpan(
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                  ),
+                                  children: <TextSpan>[
+                                    TextSpan(
+                                        text: '(+) Service Charge:  ',
+                                        style: TextStyle()),
+                                    TextSpan(text: 'BDT 0'),
+                                  ],
+                                ),
+                              ),
+                              RichText(
+                                text: TextSpan(
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                  ),
+                                  children: <TextSpan>[
+                                    TextSpan(
+                                        text: '(-) Discount:  ',
+                                        style: TextStyle()),
+                                    TextSpan(
+                                        text:
+                                            'BDT ${controller.data['discount']}'),
+                                  ],
+                                ),
+                              ),
+                              RichText(
+                                text: TextSpan(
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                  ),
+                                  children: <TextSpan>[
+                                    TextSpan(
+                                        text: 'Grand Total:  ',
+                                        style: TextStyle()),
+                                    TextSpan(
+                                        text:
+                                            'BDT ${((double.tryParse("${controller.trip['trip']['price']}") ?? 0.0) * controller.data['seats'].length) - (double.tryParse("${controller.data['discount']}") ?? 0.0)}'),
+                                  ],
+                                ),
+                              ),
+                              RichText(
+                                text: TextSpan(
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                  ),
+                                  children: <TextSpan>[
+                                    TextSpan(
+                                        text: 'Booked By:  ',
+                                        style: TextStyle()),
+                                    TextSpan(text: controller.data['name']),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                      RichText(
-                        text: TextSpan(
-                          style: TextStyle(
-                            color: Colors.black,
-                          ),
-                          children: <TextSpan>[
-                            TextSpan(
-                                text: 'Bording Point:  ', style: TextStyle()),
-                            TextSpan(text: 'TT.para - 2.00 AM'),
-                          ],
-                        ),
-                      ),
-                      RichText(
-                        text: TextSpan(
-                          style: TextStyle(
-                            color: Colors.black,
-                          ),
-                          children: <TextSpan>[
-                            TextSpan(
-                                text: 'Dropping Point:  ', style: TextStyle()),
-                            TextSpan(text: 'Tong Road - 7.00 AM'),
-                          ],
-                        ),
-                      ),
-                      RichText(
-                        text: TextSpan(
-                          style: TextStyle(
-                            color: Colors.black,
-                          ),
-                          children: <TextSpan>[
-                            TextSpan(text: 'Issue Date:  ', style: TextStyle()),
-                            TextSpan(text: '26 May, 2023'),
-                          ],
-                        ),
-                      ),
-                      RichText(
-                        text: TextSpan(
-                          style: TextStyle(
-                            color: Colors.black,
-                          ),
-                          children: <TextSpan>[
-                            TextSpan(text: 'Booked By:  ', style: TextStyle()),
-                            TextSpan(text: 'Mr. Hridoy'),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                    ]),
               ),
-              Column(
-                children: [
-                  DottedLine(
-                    direction: Axis.horizontal,
-                    lineLength: double.infinity,
-                    lineThickness: 1.0,
-                    dashLength: 4.0,
-                    dashColor: Colors.black,
-                    dashGapRadius: 0.0,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text('Seat Details'),
-                  ),
-                  DottedLine(
-                    direction: Axis.horizontal,
-                    lineLength: double.infinity,
-                    lineThickness: 1.0,
-                    dashLength: 4.0,
-                    dashColor: Colors.black,
-                    dashGapRadius: 0.0,
-                  ),
-                ],
-              ),
-              Container(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      RichText(
-                        text: TextSpan(
-                          style: TextStyle(
-                            color: Colors.black,
-                          ),
-                          children: <TextSpan>[
-                            TextSpan(text: 'P Name:  ', style: TextStyle()),
-                            TextSpan(text: 'Rasel'),
-                          ],
-                        ),
-                      ),
-                      RichText(
-                        text: TextSpan(
-                          style: TextStyle(
-                            color: Colors.black,
-                          ),
-                          children: <TextSpan>[
-                            TextSpan(text: 'P Phone:  ', style: TextStyle()),
-                            TextSpan(text: '01546654682'),
-                          ],
-                        ),
-                      ),
-                      RichText(
-                        text: TextSpan(
-                          style: TextStyle(
-                            color: Colors.black,
-                          ),
-                          children: <TextSpan>[
-                            TextSpan(text: 'Seat No:  ', style: TextStyle()),
-                            TextSpan(text: 'A1'),
-                          ],
-                        ),
-                      ),
-                      RichText(
-                        text: TextSpan(
-                          style: TextStyle(
-                            color: Colors.black,
-                          ),
-                          children: <TextSpan>[
-                            TextSpan(
-                                text: 'Total Seats:  ', style: TextStyle()),
-                            TextSpan(text: '1'),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Column(
-                children: [
-                  DottedLine(
-                    direction: Axis.horizontal,
-                    lineLength: double.infinity,
-                    lineThickness: 1.0,
-                    dashLength: 4.0,
-                    dashColor: Colors.black,
-                    dashGapRadius: 0.0,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text('Payment Details'),
-                  ),
-                  DottedLine(
-                    direction: Axis.horizontal,
-                    lineLength: double.infinity,
-                    lineThickness: 1.0,
-                    dashLength: 4.0,
-                    dashColor: Colors.black,
-                    dashGapRadius: 0.0,
-                  ),
-                ],
-              ),
-              Container(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      RichText(
-                        text: TextSpan(
-                          style: TextStyle(
-                            color: Colors.black,
-                          ),
-                          children: <TextSpan>[
-                            TextSpan(
-                                text: 'Seat Fare (400 X 1):  ',
-                                style: TextStyle()),
-                            TextSpan(text: 'BDT 400'),
-                          ],
-                        ),
-                      ),
-                      RichText(
-                        text: TextSpan(
-                          style: TextStyle(
-                            color: Colors.black,
-                          ),
-                          children: <TextSpan>[
-                            TextSpan(
-                                text: '(+) Service Charge:  ',
-                                style: TextStyle()),
-                            TextSpan(text: 'BDT 0'),
-                          ],
-                        ),
-                      ),
-                      RichText(
-                        text: TextSpan(
-                          style: TextStyle(
-                            color: Colors.black,
-                          ),
-                          children: <TextSpan>[
-                            TextSpan(
-                                text: '(-) Discount:  ', style: TextStyle()),
-                            TextSpan(text: 'BDT 0'),
-                          ],
-                        ),
-                      ),
-                      RichText(
-                        text: TextSpan(
-                          style: TextStyle(
-                            color: Colors.black,
-                          ),
-                          children: <TextSpan>[
-                            TextSpan(
-                                text: 'Grand Total:  ', style: TextStyle()),
-                            TextSpan(text: 'BDT 400'),
-                          ],
-                        ),
-                      ),
-                      RichText(
-                        text: TextSpan(
-                          style: TextStyle(
-                            color: Colors.black,
-                          ),
-                          children: <TextSpan>[
-                            TextSpan(text: 'Booked By:  ', style: TextStyle()),
-                            TextSpan(text: 'Mr. Hridoy'),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ]),
-      ),
             ],
           ),
         ),

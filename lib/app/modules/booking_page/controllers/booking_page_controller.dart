@@ -8,6 +8,7 @@ import '../../../routes/app_pages.dart';
 class BookingPageController extends GetxController {
   var data = Get.arguments['data'];
   var tripId = Get.arguments['ticket_id'];
+  Map<String, dynamic> trip = Get.arguments['trip'];
 
   List<String> boardingPoint = Get.arguments['bording-point'];
   List<String> dropingPoint = Get.arguments['droping-point'];
@@ -68,6 +69,8 @@ class BookingPageController extends GetxController {
           GlobalSnackbar.success(msg: value['message']);
           Get.offNamed(Routes.TICKET_DETAILS_PAGE, arguments: {
             "data": data,
+            "ticket-data": value['data'],
+            "trip": trip
           });
         } else {
           isSubmitting(false);

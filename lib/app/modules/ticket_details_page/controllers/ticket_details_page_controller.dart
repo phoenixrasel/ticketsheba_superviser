@@ -2,6 +2,7 @@ import 'package:blue_thermal_printer/blue_thermal_printer.dart';
 import 'package:get/get.dart';
 import 'package:ticketsheba_superviser/app/data/services/prefrences.dart';
 import 'package:flutter/material.dart';
+import 'package:ticketsheba_superviser/core/extensions/extensions.dart';
 import 'package:ticketsheba_superviser/global/global_alert/global_snackbar.dart';
 
 import 'dart:async';
@@ -10,7 +11,9 @@ class TicketDetailsPageController extends GetxController {
   BlueThermalPrinter bluetooth = BlueThermalPrinter.instance;
 
   Map<String, dynamic> data = Get.arguments['data'];
+  Map<String, dynamic> ticketData = Get.arguments['ticket-data'];
   var trip = Get.arguments['trip'];
+  var loginInfo = Pref.readData(key: Pref.SESSION);
 
   RxList<BluetoothDevice> devices = <BluetoothDevice>[].obs;
   late BluetoothDevice device;
@@ -22,6 +25,16 @@ class TicketDetailsPageController extends GetxController {
   RxString selectedPrinter = "".obs;
 
   RxString topMessage = "".obs;
+
+  getBoardingTime() => trip['trip']['boarding_points'][
+          trip['trip']['boarding_points'].indexWhere(
+              (element) => element['boarding_point'] == data['boarding_point'])]
+      ['boarding_time'];
+
+  getDropingTime() => trip['trip']['dropping_points'][
+          trip['trip']['dropping_points'].indexWhere(
+              (element) => element['dropping_point'] == data['dropping_point'])]
+      ['dropping_time'];
 
   @override
   void onInit() {
@@ -265,20 +278,21 @@ class TicketDetailsPageController extends GetxController {
     update();
     bluetooth.isConnected.then((isConnected) {
       if (isConnected ?? false) {
-        var prefValue = Pref.readData(key: Pref.SESSION);
-        var companyName = prefValue['company']['name'];
-        bluetooth.printCustom(companyName, 2, 1, charset: "windows-1250");
-        bluetooth.printCustom("App", 0, 1, charset: "windows-1250");
-        bluetooth.printCustom("*********************", 1, 0);
-        bluetooth.printCustom("Journey: ${trip['title'].split(" / ").first}", 0, 1,
-            charset: "windows-1250");
-        bluetooth.printCustom("Seat details:", 0, 1, charset: "windows-1250");
-        bluetooth.printCustom("Seat details:", 0, 1, charset: "windows-1250");
-        bluetooth.printLeftRight(
-          "Sales Receipt ",
-          "",
-          1,
-        );
+        // bluetooth.printCustom(loginInfo['company']['name'], 2, 1,
+        //     charset: "windows-1250");
+        // bluetooth.printCustom(trip['trip']['title'].split(" / ").first, 0, 1,
+        //     charset: "windows-1250");
+        // bluetooth.printCustom("*********************", 1, 0);
+        // bluetooth.printCustom(
+        //     "Journey: ${trip['title'].split(" / ").first}", 0, 1,
+        //     charset: "windows-1250");
+        // bluetooth.printCustom("Seat details:", 0, 1, charset: "windows-1250");
+        // bluetooth.printCustom("Seat details:", 0, 1, charset: "windows-1250");
+        // bluetooth.printLeftRight(
+        //   "Sales Receipt ",
+        //   "",
+        //   1,
+        // );
 
         ///format: "%-26s %10s %n"
         // bluetooth.printLeftRight(
@@ -292,34 +306,34 @@ class TicketDetailsPageController extends GetxController {
         // bluetooth.print4Column("S/L   Item's", "MRP", "Qty", "Total", 0,
         //     format: "%-20s %-6s %-4s %4s %n");
         // bluetooth.printCustom(getLine(), 1, 0);
-        for (int index = 0; index < data.length; index++) {
-          bool hasSecond = false;
-          String firstColumn =
-              "${index + 1}   ${data[index].brandName ?? ""}${data[index].strength ?? ""}";
-          if (firstColumn.length > 20) {
-            hasSecond = true;
-          }
-          bluetooth.print4Column(
-              firstColumn.length > 20
-                  ? firstColumn.substring(0, 20)
-                  : firstColumn,
-              "${data[index].salesPrice!.toStringAsFixed(2)}",
-              "${data[index].quantity}",
-              "${(data[index].quantity! * data[index].salesPrice!).toStringAsFixed(2)}",
-              0,
-              format: "%-20s %-6s %2s %7s %n");
-          if (hasSecond) {
-            bluetooth.print4Column(
-                "     ${firstColumn.substring(20, firstColumn.length)}",
-                "  ",
-                "  ",
-                "  ",
-                0,
-                format: "%-20s %-6s %2s %7s %n");
-          }
+        // for (int index = 0; index < data.length; index++) {
+        //   bool hasSecond = false;
+        //   String firstColumn =
+        //       "${index + 1}   ${data[index].brandName ?? ""}${data[index].strength ?? ""}";
+        //   if (firstColumn.length > 20) {
+        //     hasSecond = true;
+        //   }
+        //   bluetooth.print4Column(
+        //       firstColumn.length > 20
+        //           ? firstColumn.substring(0, 20)
+        //           : firstColumn,
+        //       "${data[index].salesPrice!.toStringAsFixed(2)}",
+        //       "${data[index].quantity}",
+        //       "${(data[index].quantity! * data[index].salesPrice!).toStringAsFixed(2)}",
+        //       0,
+        //       format: "%-20s %-6s %2s %7s %n");
+        //   if (hasSecond) {
+        //     bluetooth.print4Column(
+        //         "     ${firstColumn.substring(20, firstColumn.length)}",
+        //         "  ",
+        //         "  ",
+        //         "  ",
+        //         0,
+        //         format: "%-20s %-6s %2s %7s %n");
+        //   }
 
-          // bluetooth.printCustom(getLine(), 1, 0);
-        }
+        //   // bluetooth.printCustom(getLine(), 1, 0);
+        // }
         // bluetooth.printCustom(getLine(), 1, 0);
         // bluetooth.printLeftRight("", "Total Price: ${getTotalPrice()}", 0,
         //     format: "%-15s %25s %n");
@@ -337,10 +351,7 @@ class TicketDetailsPageController extends GetxController {
         // bluetooth.printCustom(getLine(), 1, 0);
         // bluetooth.printCustom(getMessageBottom(), 0, 1);
         // bluetooth.printCustom("Call Us: 01922800322 or 09609080706", 0, 1);
-        bluetooth.printNewLine();
-        bluetooth.paperCut();
-        isPrinting.value = false;
-        update();
+        ticketPrint();
       } else {
         GlobalSnackbar.error(
             title: "Success",
@@ -352,29 +363,36 @@ class TicketDetailsPageController extends GetxController {
     });
   }
 
-void ticketPrint() {
-    bluetooth.printCustom("Star Line", 2, 1, charset: "windows-1250");
-    bluetooth.printCustom("Dhaka to Feni", 0, 1, charset: "windows-1250");
-    bluetooth.printCustom("26 May, 2023", 1, 0);
+  void ticketPrint() {
+    bluetooth.printCustom(loginInfo['company']['name'], 2, 1,
+        charset: "windows-1250");
+    bluetooth.printCustom(trip['trip']['title'].split(" / ").first, 0, 1,
+        charset: "windows-1250");
+    bluetooth.printCustom(trip['assign_date'], 1, 0);
     bluetooth.printCustom("*********************", 0, 1,
         charset: "windows-1250");
-    bluetooth.printCustom("Ticket Info: 3153215454", 0, 1,
-        charset: "windows-1250");
+    bluetooth.printCustom("Ticket Info", 0, 1, charset: "windows-1250");
     bluetooth.printCustom("*********************", 0, 1,
         charset: "windows-1250");
-    bluetooth.printCustom("Ticket No: 3153215454", 0, 1,
+    bluetooth.printCustom("Ticket No: ${ticketData['ticket_no']}", 0, 1,
         charset: "windows-1250");
-    bluetooth.printCustom("Coach No: 2135432163", 0, 1,
+    bluetooth.printCustom("Coach No: ${trip['trip']['coach_no']}", 0, 1,
         charset: "windows-1250");
-    bluetooth.printCustom("Departure Time: 02.00 AM", 0, 1,
+    bluetooth.printCustom(
+        "Departure Time: ${trip['trip']['departure_time']}", 0, 1,
         charset: "windows-1250");
-    bluetooth.printCustom("Arrival Time: 07.00 AM", 0, 1,
+    bluetooth.printCustom("Arrival Time: ${trip['trip']['arrival_time']}", 0, 1,
         charset: "windows-1250");
-    bluetooth.printCustom("Bording Point: TT.para - 2.00 AM", 0, 1,
+    bluetooth.printCustom(
+        "Bording Point: ${data['boarding_point']} - ${getBoardingTime()}", 0, 1,
         charset: "windows-1250");
-    bluetooth.printCustom("Dropping Point: Tong Road - 7.00 AM", 0, 1,
+    bluetooth.printCustom(
+        "Dropping Point: ${data['dropping_point']} - ${getDropingTime()}", 0, 1,
         charset: "windows-1250");
-    bluetooth.printCustom("Issue Date: 26 May, 2023'", 1, 0);
+    bluetooth.printCustom(
+        "Issue Date: ${DateTime.now().dateFormat("dd MMM, yyyy")}", 1, 0);
+    bluetooth.printCustom("Booked By: ${loginInfo['data']['name']}", 1, 0);
+    seatDetails();
   }
 
   void seatDetails() {
@@ -383,11 +401,15 @@ void ticketPrint() {
     bluetooth.printCustom("Seat Details", 0, 1, charset: "windows-1250");
     bluetooth.printCustom("*********************", 0, 1,
         charset: "windows-1250");
-    bluetooth.printCustom("P Name: Rasel", 0, 1, charset: "windows-1250");
-    bluetooth.printCustom("P Phone: 01546654682", 0, 1,
+    bluetooth.printCustom("P Name: ${data['name']}", 0, 1,
         charset: "windows-1250");
-    bluetooth.printCustom("Seat No: A1", 0, 1, charset: "windows-1250");
-    bluetooth.printCustom("Total Seats: 1", 0, 1, charset: "windows-1250");
+    bluetooth.printCustom("P Phone: ${data['phone']}", 0, 1,
+        charset: "windows-1250");
+    bluetooth.printCustom("Seat No: ${data['seats'].toString()}", 0, 1,
+        charset: "windows-1250");
+    bluetooth.printCustom("Total Seats: ${data['seats'].length}", 0, 1,
+        charset: "windows-1250");
+    paymentDetails();
   }
 
   void paymentDetails() {
@@ -396,12 +418,25 @@ void ticketPrint() {
     bluetooth.printCustom("Payment Details", 0, 1, charset: "windows-1250");
     bluetooth.printCustom("*********************", 0, 1,
         charset: "windows-1250");
-    bluetooth.printCustom("Seat Fare (400 X 1): BDT 400", 0, 1,
+    bluetooth.printCustom(
+        "Seat Fare (${trip['trip']['price']} X ${data['seats'].length}): BDT ${(double.tryParse("${trip['trip']['price']}") ?? 0.0) * data['seats'].length}",
+        0,
+        1,
         charset: "windows-1250");
     bluetooth.printCustom("(+) Service Charge: BDT 0", 0, 1,
         charset: "windows-1250");
-    bluetooth.printCustom("(-) Discount: BDT 0", 0, 1, charset: "windows-1250");
-    bluetooth.printCustom("Grand Total: BDT 0", 0, 1, charset: "windows-1250");
+    bluetooth.printCustom("(-) Discount: BDT ${data['discount']}", 0, 1,
+        charset: "windows-1250");
+    bluetooth.printCustom(
+        "Grand Total: BDT ${((double.tryParse("${trip['trip']['price']}") ?? 0.0) * data['seats'].length) - (double.tryParse("${data['discount']}") ?? 0.0)}",
+        0,
+        1,
+        charset: "windows-1250");
+
+    bluetooth.printNewLine();
+    bluetooth.paperCut();
+    isPrinting.value = false;
+    update();
   }
 
   void disconnectNow() {
