@@ -84,11 +84,14 @@ class SeatDetailsController extends GetxController {
         /**
          * store special seat
          */
-        storeSpecialSeats(value['trip'], value['sold_ticket']);
+        print("""resposne -> ${response}""");
+        storeSpecialSeats(
+            value['trip'], "${response['sold_ticket'] ?? ""}".split(","));
         /**
          * store normal seat
          */
-        storeNormalSat(value['trip'], value['sold_ticket']);
+        storeNormalSat(
+            value['trip'], "${response['sold_ticket'] ?? ""}".split(","));
         isFetching.value = false;
         update();
       });
@@ -108,9 +111,8 @@ class SeatDetailsController extends GetxController {
     int totalSeats = value['fleet']['special_seats'];
     int totalRow = (totalSeats / totalColumn).round();
 
-    print("total seats -> $totalRow");
-
     List<dynamic> bookedSeats = soldList;
+    print("total seats -> $bookedSeats");
     /**
      * Calculating row
      */
@@ -239,8 +241,7 @@ class SeatDetailsController extends GetxController {
         columns.add({
           "seat-name": "${seatNumber[row + rightColumn]}",
           "is-selected": false,
-          "is-booked": bookedSeats.contains(
-              "${seatNumber[row + rightColumn].replaceAll("[", "").replaceAll("]", "")}"),
+          "is-booked": bookedSeats.contains("${seatNumber[row + rightColumn]}"),
           "price": value['price'],
         });
       }

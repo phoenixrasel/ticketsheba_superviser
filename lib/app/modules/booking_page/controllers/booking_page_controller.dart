@@ -27,7 +27,7 @@ class BookingPageController extends GetxController {
     "email": TextEditingController(),
     "address": TextEditingController(),
     "total-fair": TextEditingController(),
-    "discount": TextEditingController(),
+    "discount": TextEditingController(text: "0"),
     "grand-total": TextEditingController(),
     "payment": TextEditingController(),
     "payment-amount": TextEditingController(),
@@ -85,7 +85,7 @@ class BookingPageController extends GetxController {
   updateView() {
     inputs['total-fair']!.text = "${data['total_fair']}";
     inputs['grand-total']!.text = "${data['grand_total']}";
-    inputs['due-amount']!.text = "0";
+    inputs['due-amount']!.text = "${data['grand_total']}";
   }
 
   @override
