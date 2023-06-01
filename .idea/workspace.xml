@@ -5,17 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d1894111-bf4e-4f81-9498-6f1bc0afdb9b" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/app/modules/booking_page/controllers/booking_page_controller.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/app/modules/booking_page/controllers/booking_page_controller.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/app/modules/booking_page/views/booking_page_view.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/app/modules/booking_page/views/booking_page_view.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/app/modules/login/views/login_view.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/app/modules/login/views/login_view.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/app/modules/ticket_details_page/controllers/ticket_details_page_controller.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/app/modules/ticket_details_page/controllers/ticket_details_page_controller.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/app/modules/ticket_details_page/views/ticket_details_page_view.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/app/modules/ticket_details_page/views/ticket_details_page_view.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/global/widget/global_input.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/global/widget/global_input.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/main.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketsheba_superviser.iml" beforeDir="false" afterPath="$PROJECT_DIR$/ticketsheba_superviser.iml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
