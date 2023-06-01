@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:ticketsheba_superviser/global/global_alert/global_snackbar.dart';
 
 import '../../../../core/extra/app_assets.dart';
 import '../../../../core/extra/app_dimens.dart';
@@ -11,6 +12,7 @@ import '../controllers/login_controller.dart';
 
 class LoginView extends GetView<LoginController> {
   const LoginView({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,7 +64,12 @@ class LoginView extends GetView<LoginController> {
                         : GlobalButton.btn(
                             text: "Sign In",
                             onTap: () {
-                              controller.login();
+                              if (controller.inputs['user']!.text.isEmpty)
+                                GlobalSnackbar.error(msg: "Enter user name");
+                              else if (controller.inputs['pass']!.text.isEmpty)
+                                GlobalSnackbar.error(msg: "Enter password");
+                              else
+                                controller.login();
                             }),
                   ),
                   SizedBox(

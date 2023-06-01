@@ -32,8 +32,8 @@ class BookingPageController extends GetxController {
     "payment": TextEditingController(),
     "payment-amount": TextEditingController(),
     "due-amount": TextEditingController(),
-    "boarding_point": TextEditingController(),
-    "dropping_point": TextEditingController(),
+    // "boarding_point": TextEditingController(),
+    // "dropping_point": TextEditingController(),
     "boarding": TextEditingController(),
     "droping": TextEditingController(),
   };
@@ -59,6 +59,7 @@ class BookingPageController extends GetxController {
   submitQuickBook() async {
     isSubmitting(true);
     try {
+      print("seats -> ${data['seats']}");
       String seats = data['seats'].replaceAll("[", '').replaceAll("]", "");
       seats = seats.substring(0, seats.length - 1);
       data['seats'] = seats.split(",");

@@ -12,7 +12,7 @@ class GlobalInput {
           Widget? suffixIcon,
           bool? isObsecure,
           bool enable = true,
-          TextInputType? inputType}) =>
+          TextInputType? inputType, Function(dynamic value)? onChange}) =>
       Container(
         height: 76,
         margin: EdgeInsets.only(top: AppDimens.breatingSpace / 2),
@@ -39,6 +39,7 @@ class GlobalInput {
                       obscureText: isObsecure ?? false,
                       keyboardType: inputType,
                       enabled: enable,
+                      onChanged: onChange,
                       style: TextStyle(color: ExtraColors.BLACK_500),
                       decoration: InputDecoration(
                           border: InputBorder.none, hintText: hint),

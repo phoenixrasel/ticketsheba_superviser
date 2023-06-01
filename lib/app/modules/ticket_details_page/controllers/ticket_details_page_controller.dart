@@ -1,13 +1,15 @@
 import 'package:blue_thermal_printer/blue_thermal_printer.dart';
 import 'package:get/get.dart';
+import 'package:sunmi_printer_plus/enums.dart';
+import 'package:sunmi_printer_plus/sunmi_printer_plus.dart';
 import 'package:ticketsheba_superviser/app/data/services/prefrences.dart';
-import 'package:flutter/material.dart';
-import 'package:ticketsheba_superviser/core/extensions/extensions.dart';
-import 'package:ticketsheba_superviser/global/global_alert/global_snackbar.dart';
 
 import 'dart:async';
 
+import 'package:ticketsheba_superviser/core/extensions/extensions.dart';
+
 class TicketDetailsPageController extends GetxController {
+
   BlueThermalPrinter bluetooth = BlueThermalPrinter.instance;
 
   Map<String, dynamic> data = Get.arguments['data'];
@@ -36,159 +38,217 @@ class TicketDetailsPageController extends GetxController {
               (element) => element['dropping_point'] == data['dropping_point'])]
       ['dropping_time'];
 
+  RxBool isPrinting = false.obs;
+
   @override
   void onInit() {
     super.onInit();
-    initPlatformState();
+
+    // initPlatformState();
   }
 
-  Future<void> initPlatformState() async {
-    bool isConnected = await bluetooth.isConnected ?? false;
-    // selectedPrinter.value =
-    //     await PrefStorage.getPrefValue(key: PrefStorage.selectedPrinter) ??
-    //         "80 mm";
-    List<BluetoothDevice> devicesList = [];
-    try {
-      devicesList = await bluetooth.getBondedDevices();
-    } catch (e) {}
+  printNow() async {
+    await SunmiPrinter.bindingPrinter();
+    await SunmiPrinter.startTransactionPrint(true);
+    await SunmiPrinter.printText("${loginInfo['company']['name']}");
+    await SunmiPrinter.printText("${trip['trip']['title'].split(" / ").first}");
+    await SunmiPrinter.printText("${trip['assign_date']}");
+    await SunmiPrinter.printText("*********************");
+    await SunmiPrinter.setAlignment(SunmiPrintAlign.CENTER);
+    await SunmiPrinter.printText("Ticket Info");
+    await SunmiPrinter.setAlignment(SunmiPrintAlign.LEFT);// Left align
+    await SunmiPrinter.printText("*********************");
+    await SunmiPrinter.printText("Ticket No: ${ticketData['ticket_no']}");
+    await SunmiPrinter.printText("Coach No: ${trip['trip']['coach_no']}");
+    await SunmiPrinter.printText("Departure Time: ${trip['trip']['departure_time']}");
+    await SunmiPrinter.printText("Arrival Time: ${trip['trip']['arrival_time']}");
+    await SunmiPrinter.printText("Boarding Point: ${data['boarding_point'] ?? ""} - ${data['boarding_point'] != null ? getBoardingTime() : ""}");
+    await SunmiPrinter.printText("Dropping Point: ${data['dropping_point'] ?? ""} - ${data['dropping_point'] != null ? getDropingTime() : ""}");
+    await SunmiPrinter.printText("Issue Date: ${DateTime.now().dateFormat("dd MMM, yyyy")}");
+    await SunmiPrinter.printText("Booked By: ${loginInfo['data']['name']}");
 
-    bluetooth.onStateChanged().listen((state) {
-      switch (state) {
-        case BlueThermalPrinter.CONNECTED:
-          connected.value = true;
-          print("bluetooth device state: connected");
-          update();
-          break;
-        case BlueThermalPrinter.DISCONNECTED:
-          connected.value = false;
-          print("bluetooth device state: disconnected");
-          update();
-          break;
-        case BlueThermalPrinter.DISCONNECT_REQUESTED:
-          connected.value = false;
-          print("bluetooth device state: disconnect requested");
-          update();
-          break;
-        case BlueThermalPrinter.STATE_TURNING_OFF:
-          connected.value = false;
-          print("bluetooth device state: bluetooth turning off");
-          update();
-          break;
-        case BlueThermalPrinter.STATE_OFF:
-          connected.value = false;
-          print("bluetooth device state: bluetooth off");
-          update();
-          break;
-        case BlueThermalPrinter.STATE_ON:
-          connected.value = false;
-          print("bluetooth device state: bluetooth on");
-          update();
-          break;
-        case BlueThermalPrinter.STATE_TURNING_ON:
-          connected.value = false;
-          print("bluetooth device state: bluetooth turning on");
-          update();
-          break;
-        case BlueThermalPrinter.ERROR:
-          connected.value = false;
-          print("bluetooth device state: error");
-          update();
-          break;
-        default:
-          print(state);
-          break;
-      }
-    });
+    /**
+     * seat details
+     */
 
-    // if (!mounted) return;
-    String? savedDeviceName = await Pref.readData(key: Pref.btDeviceName);
-    devices.value = devicesList;
-    var deviceIndex = devices.indexWhere(
-        (element) => element.name == (savedDeviceName ?? "RP328-E"));
-    connectedDeviceName.value =
-        deviceIndex < 0 ? devices[deviceIndex].name ?? "" : "";
-    update();
-    device = deviceIndex < 0 ? devices[deviceIndex] : devices.first;
-    devices.forEach((element) {
-      print("blue name -> ${element.name}");
-    });
-    update();
-    connectNow();
+    await SunmiPrinter.printText("*********************");
+    await SunmiPrinter.setAlignment(SunmiPrintAlign.CENTER);
+    await SunmiPrinter.printText("Seat Details");
+    await SunmiPrinter.setAlignment(SunmiPrintAlign.LEFT);// Left align
+    await SunmiPrinter.printText("*********************");
+    await SunmiPrinter.printText("P Name: ${data['name'] ?? ""}");
+    await SunmiPrinter.printText("P Phone: ${data['phone'] ?? ""}");
+    await SunmiPrinter.printText("Seat No: ${data['seats'].toString()}");
+    await SunmiPrinter.printText("Total Seats: ${data['seats'].length}");
 
-    if (isConnected) {
-      connected.value = true;
-      update();
-    }
+    /**
+     * payment details
+     */
+
+    await SunmiPrinter.printText("*********************");
+    await SunmiPrinter.setAlignment(SunmiPrintAlign.CENTER);
+    await SunmiPrinter.printText("Payment Details");
+    await SunmiPrinter.setAlignment(SunmiPrintAlign.LEFT);// Left align
+    await SunmiPrinter.printText("*********************");
+    await SunmiPrinter.printText("Seat Fare (${trip['trip']['price']} X ${data['seats'].length}): BDT ${(double.tryParse("${trip['trip']['price']}") ?? 0.0) * data['seats'].length}");
+    await SunmiPrinter.printText("(+) Service Charge: BDT 0");
+    await SunmiPrinter.printText("(-) Discount: BDT ${data['discount']}");
+    await SunmiPrinter.printText("Grand Total: BDT ${((double.tryParse("${trip['trip']['price']}") ?? 0.0) * data['seats'].length) - (double.tryParse("${data['discount']}") ?? 0.0)}");
+
+
+    await SunmiPrinter.submitTransactionPrint(); // SUBMIT and cut paper
+    await SunmiPrinter.exitTransactionPrint(true); // Close the transaction
+
   }
 
-  setDevice(name) {
-    connectedDeviceName.value = name;
-    device = devices[devices.indexWhere((element) => element.name == name)];
-    update();
-  }
 
-  void connectNow() {
-    if (device == null) {
-      print('No device selected.');
-      bluetoothConnecting.value = false;
-      update();
-    } else {
-      bluetooth.isConnected.then((isConnected) {
-        if (!isConnected!) {
-          bluetooth.connect(device).catchError((error) {
-            connected.value = false;
-            update();
-          });
-          connected.value = true;
-          update();
 
-          bluetoothConnecting.value = false;
-          update();
-        } else {
-          print("device connected");
+  // Future<void> initPlatformState() async {
+  //   bool isConnected = await bluetooth.isConnected ?? false;
+  //   // selectedPrinter.value =
+  //   //     await PrefStorage.getPrefValue(key: PrefStorage.selectedPrinter) ??
+  //   //         "80 mm";
+  //   List<BluetoothDevice> devicesList = [];
+  //   try {
+  //     devicesList = await bluetooth.getBondedDevices();
+  //   } catch (e) {}
+  //
+  //   bluetooth.onStateChanged().listen((state) {
+  //     switch (state) {
+  //       case BlueThermalPrinter.CONNECTED:
+  //         connected.value = true;
+  //         print("bluetooth device state: connected");
+  //         update();
+  //         break;
+  //       case BlueThermalPrinter.DISCONNECTED:
+  //         connected.value = false;
+  //         print("bluetooth device state: disconnected");
+  //         update();
+  //         break;
+  //       case BlueThermalPrinter.DISCONNECT_REQUESTED:
+  //         connected.value = false;
+  //         print("bluetooth device state: disconnect requested");
+  //         update();
+  //         break;
+  //       case BlueThermalPrinter.STATE_TURNING_OFF:
+  //         connected.value = false;
+  //         print("bluetooth device state: bluetooth turning off");
+  //         update();
+  //         break;
+  //       case BlueThermalPrinter.STATE_OFF:
+  //         connected.value = false;
+  //         print("bluetooth device state: bluetooth off");
+  //         update();
+  //         break;
+  //       case BlueThermalPrinter.STATE_ON:
+  //         connected.value = false;
+  //         print("bluetooth device state: bluetooth on");
+  //         update();
+  //         break;
+  //       case BlueThermalPrinter.STATE_TURNING_ON:
+  //         connected.value = false;
+  //         print("bluetooth device state: bluetooth turning on");
+  //         update();
+  //         break;
+  //       case BlueThermalPrinter.ERROR:
+  //         connected.value = false;
+  //         print("bluetooth device state: error");
+  //         update();
+  //         break;
+  //       default:
+  //         print(state);
+  //         break;
+  //     }
+  //   });
+  //
+  //   // if (!mounted) return;
+  //   String? savedDeviceName = await Pref.readData(key: Pref.btDeviceName);
+  //   devices.value = devicesList;
+  //   var deviceIndex = devices.indexWhere(
+  //       (element) => element.name == (savedDeviceName ?? "RP328-E"));
+  //   connectedDeviceName.value =
+  //       deviceIndex < 0 ? devices[deviceIndex].name ?? "" : "";
+  //   update();
+  //   device = deviceIndex < 0 ? devices[deviceIndex] : devices.first;
+  //   devices.forEach((element) {
+  //     print("blue name -> ${element.name}");
+  //   });
+  //   update();
+  //   connectNow();
+  //
+  //   if (isConnected) {
+  //     connected.value = true;
+  //     update();
+  //   }
+  // }
 
-          connected.value = true;
-          bluetoothConnecting.value = false;
-          update();
-        }
-      });
-    }
-  }
+  // setDevice(name) {
+  //   connectedDeviceName.value = name;
+  //   device = devices[devices.indexWhere((element) => element.name == name)];
+  //   update();
+  // }
 
-  void connectNow2(BuildContext context) {
-    if (device == null) {
-      print('No device selected.');
-      bluetoothConnecting.value = false;
-      update();
-    } else {
-      bluetooth.isConnected.then((isConnected) async {
-        Pref.writeData(
-            key: Pref.btDeviceName, value: connectedDeviceName.value);
-        if (!isConnected!) {
-          bluetooth.connect(device).catchError((error) {
-            connected.value = false;
-            update();
-          });
-          connected.value = true;
-          update();
+  // void connectNow() {
+  //   if (device == null) {
+  //     print('No device selected.');
+  //     bluetoothConnecting.value = false;
+  //     update();
+  //   } else {
+  //     bluetooth.isConnected.then((isConnected) {
+  //       if (!isConnected!) {
+  //         bluetooth.connect(device).catchError((error) {
+  //           connected.value = false;
+  //           update();
+  //         });
+  //         connected.value = true;
+  //         update();
+  //
+  //         bluetoothConnecting.value = false;
+  //         update();
+  //       } else {
+  //         print("device connected");
+  //
+  //         connected.value = true;
+  //         bluetoothConnecting.value = false;
+  //         update();
+  //       }
+  //     });
+  //   }
+  // }
 
-          bluetoothConnecting.value = false;
-          update();
-          GlobalSnackbar.success(
-              title: "Success", msg: "Device connected print now");
-        } else {
-          print("device connected");
-          connected.value = true;
-          bluetoothConnecting.value = false;
-          update();
-          GlobalSnackbar.success(
-              title: "Success", msg: "Device connected print now");
-        }
-      });
-    }
-  }
+  // void connectNow2(BuildContext context) {
+  //   if (device == null) {
+  //     print('No device selected.');
+  //     bluetoothConnecting.value = false;
+  //     update();
+  //   } else {
+  //     bluetooth.isConnected.then((isConnected) async {
+  //       Pref.writeData(
+  //           key: Pref.btDeviceName, value: connectedDeviceName.value);
+  //       if (!isConnected!) {
+  //         bluetooth.connect(device).catchError((error) {
+  //           connected.value = false;
+  //           update();
+  //         });
+  //         connected.value = true;
+  //         update();
+  //
+  //         bluetoothConnecting.value = false;
+  //         update();
+  //         GlobalSnackbar.success(
+  //             title: "Success", msg: "Device connected print now");
+  //       } else {
+  //         print("device connected");
+  //         connected.value = true;
+  //         bluetoothConnecting.value = false;
+  //         update();
+  //         GlobalSnackbar.success(
+  //             title: "Success", msg: "Device connected print now");
+  //       }
+  //     });
+  //   }
+  // }
 
-  RxBool isPrinting = false.obs;
 
   // printNow({required BuildContext context}) {
   //   isPrinting.value = true;
@@ -273,171 +333,98 @@ class TicketDetailsPageController extends GetxController {
   //   });
   // }
 
-  printNow58({required BuildContext context}) {
-    isPrinting.value = true;
-    update();
-    bluetooth.isConnected.then((isConnected) {
-      if (isConnected ?? false) {
-        // bluetooth.printCustom(loginInfo['company']['name'], 2, 1,
-        //     charset: "windows-1250");
-        // bluetooth.printCustom(trip['trip']['title'].split(" / ").first, 0, 1,
-        //     charset: "windows-1250");
-        // bluetooth.printCustom("*********************", 1, 0);
-        // bluetooth.printCustom(
-        //     "Journey: ${trip['title'].split(" / ").first}", 0, 1,
-        //     charset: "windows-1250");
-        // bluetooth.printCustom("Seat details:", 0, 1, charset: "windows-1250");
-        // bluetooth.printCustom("Seat details:", 0, 1, charset: "windows-1250");
-        // bluetooth.printLeftRight(
-        //   "Sales Receipt ",
-        //   "",
-        //   1,
-        // );
+  // printNow58({required BuildContext context}) {
+  //   isPrinting.value = true;
+  //   update();
+  //   bluetooth.isConnected.then((isConnected) {
+  //     if (isConnected ?? false) {
+  //       ticketPrint();
+  //     } else {
+  //       GlobalSnackbar.error(
+  //           title: "Success",
+  //           msg:
+  //               "Printer not connected. Please connect your printer using bluetooth");
+  //       isPrinting.value = false;
+  //       update();
+  //     }
+  //   });
+  // }
 
-        ///format: "%-26s %10s %n"
-        // bluetooth.printLeftRight(
-        //     "ID: ${getSalesId()} (APP) ", "DateTime: ${getSalesDate()}", 0,
-        //     format: "%-2s %23s %n");
-        // bluetooth.printLeftRight(
-        //     "Payment By: ${getPaymentBy()}", "Cashier: ${getCashier()}", 0,
-        //     format: "%-2s %22s %n");
-        // bluetooth.printCustom("Customer: ${getCustomerInfo()}", 0, 0);
-        // bluetooth.printCustom(getLine(), 1, 0);
-        // bluetooth.print4Column("S/L   Item's", "MRP", "Qty", "Total", 0,
-        //     format: "%-20s %-6s %-4s %4s %n");
-        // bluetooth.printCustom(getLine(), 1, 0);
-        // for (int index = 0; index < data.length; index++) {
-        //   bool hasSecond = false;
-        //   String firstColumn =
-        //       "${index + 1}   ${data[index].brandName ?? ""}${data[index].strength ?? ""}";
-        //   if (firstColumn.length > 20) {
-        //     hasSecond = true;
-        //   }
-        //   bluetooth.print4Column(
-        //       firstColumn.length > 20
-        //           ? firstColumn.substring(0, 20)
-        //           : firstColumn,
-        //       "${data[index].salesPrice!.toStringAsFixed(2)}",
-        //       "${data[index].quantity}",
-        //       "${(data[index].quantity! * data[index].salesPrice!).toStringAsFixed(2)}",
-        //       0,
-        //       format: "%-20s %-6s %2s %7s %n");
-        //   if (hasSecond) {
-        //     bluetooth.print4Column(
-        //         "     ${firstColumn.substring(20, firstColumn.length)}",
-        //         "  ",
-        //         "  ",
-        //         "  ",
-        //         0,
-        //         format: "%-20s %-6s %2s %7s %n");
-        //   }
-
-        //   // bluetooth.printCustom(getLine(), 1, 0);
-        // }
-        // bluetooth.printCustom(getLine(), 1, 0);
-        // bluetooth.printLeftRight("", "Total Price: ${getTotalPrice()}", 0,
-        //     format: "%-15s %25s %n");
-        // bluetooth.printLeftRight("", "Less Adjustment(-): ${getDiscount()}", 0,
-        //     format: "%-15s %20s %n");
-        // if (Get.arguments["vat"] != 0.0)
-        //   bluetooth.printLeftRight("", "Vat(+): ${getVat()}", 0,
-        //       format: "%-15s %20 %n");
-        // bluetooth.printLeftRight("", "Net Price: ${getNetPrice()}", 1,
-        //     format: "%-13s %-10s %n"); //format: "%-15s %31s %n"
-        // bluetooth.printNewLine();
-        // bluetooth.printNewLine();
-        // // bluetooth.printCustom("আমি বাংলাই গান গাই", 0, 1, charset: "\u088F");
-        // bluetooth.printCustom(topMessage.value, 0, 1);
-        // bluetooth.printCustom(getLine(), 1, 0);
-        // bluetooth.printCustom(getMessageBottom(), 0, 1);
-        // bluetooth.printCustom("Call Us: 01922800322 or 09609080706", 0, 1);
-        ticketPrint();
-      } else {
-        GlobalSnackbar.error(
-            title: "Success",
-            msg:
-                "Printer not connected. Please connect your printer using bluetooth");
-        isPrinting.value = false;
-        update();
-      }
-    });
-  }
-
-  void ticketPrint() {
-    bluetooth.printCustom(loginInfo['company']['name'], 2, 1,
-        charset: "windows-1250");
-    bluetooth.printCustom(trip['trip']['title'].split(" / ").first, 0, 1,
-        charset: "windows-1250");
-    bluetooth.printCustom(trip['assign_date'], 1, 0);
-    bluetooth.printCustom("*********************", 0, 1,
-        charset: "windows-1250");
-    bluetooth.printCustom("Ticket Info", 0, 1, charset: "windows-1250");
-    bluetooth.printCustom("*********************", 0, 1,
-        charset: "windows-1250");
-    bluetooth.printCustom("Ticket No: ${ticketData['ticket_no']}", 0, 1,
-        charset: "windows-1250");
-    bluetooth.printCustom("Coach No: ${trip['trip']['coach_no']}", 0, 1,
-        charset: "windows-1250");
-    bluetooth.printCustom(
-        "Departure Time: ${trip['trip']['departure_time']}", 0, 1,
-        charset: "windows-1250");
-    bluetooth.printCustom("Arrival Time: ${trip['trip']['arrival_time']}", 0, 1,
-        charset: "windows-1250");
-    bluetooth.printCustom(
-        "Bording Point: ${data['boarding_point']} - ${getBoardingTime()}", 0, 1,
-        charset: "windows-1250");
-    bluetooth.printCustom(
-        "Dropping Point: ${data['dropping_point']} - ${getDropingTime()}", 0, 1,
-        charset: "windows-1250");
-    bluetooth.printCustom(
-        "Issue Date: ${DateTime.now().dateFormat("dd MMM, yyyy")}", 1, 0);
-    bluetooth.printCustom("Booked By: ${loginInfo['data']['name']}", 1, 0);
-    seatDetails();
-  }
-
-  void seatDetails() {
-    bluetooth.printCustom("*********************", 0, 1,
-        charset: "windows-1250");
-    bluetooth.printCustom("Seat Details", 0, 1, charset: "windows-1250");
-    bluetooth.printCustom("*********************", 0, 1,
-        charset: "windows-1250");
-    bluetooth.printCustom("P Name: ${data['name']}", 0, 1,
-        charset: "windows-1250");
-    bluetooth.printCustom("P Phone: ${data['phone']}", 0, 1,
-        charset: "windows-1250");
-    bluetooth.printCustom("Seat No: ${data['seats'].toString()}", 0, 1,
-        charset: "windows-1250");
-    bluetooth.printCustom("Total Seats: ${data['seats'].length}", 0, 1,
-        charset: "windows-1250");
-    paymentDetails();
-  }
-
-  void paymentDetails() {
-    bluetooth.printCustom("*********************", 0, 1,
-        charset: "windows-1250");
-    bluetooth.printCustom("Payment Details", 0, 1, charset: "windows-1250");
-    bluetooth.printCustom("*********************", 0, 1,
-        charset: "windows-1250");
-    bluetooth.printCustom(
-        "Seat Fare (${trip['trip']['price']} X ${data['seats'].length}): BDT ${(double.tryParse("${trip['trip']['price']}") ?? 0.0) * data['seats'].length}",
-        0,
-        1,
-        charset: "windows-1250");
-    bluetooth.printCustom("(+) Service Charge: BDT 0", 0, 1,
-        charset: "windows-1250");
-    bluetooth.printCustom("(-) Discount: BDT ${data['discount']}", 0, 1,
-        charset: "windows-1250");
-    bluetooth.printCustom(
-        "Grand Total: BDT ${((double.tryParse("${trip['trip']['price']}") ?? 0.0) * data['seats'].length) - (double.tryParse("${data['discount']}") ?? 0.0)}",
-        0,
-        1,
-        charset: "windows-1250");
-
-    bluetooth.printNewLine();
-    bluetooth.paperCut();
-    isPrinting.value = false;
-    update();
-  }
+  // void ticketPrint() {
+  //   bluetooth.printCustom(loginInfo['company']['name'], 2, 1,
+  //       charset: "windows-1250");
+  //   bluetooth.printCustom(trip['trip']['title'].split(" / ").first, 0, 1,
+  //       charset: "windows-1250");
+  //   bluetooth.printCustom(trip['assign_date'], 1, 0);
+  //   bluetooth.printCustom("*********************", 0, 1,
+  //       charset: "windows-1250");
+  //   bluetooth.printCustom("Ticket Info", 0, 1, charset: "windows-1250");
+  //   bluetooth.printCustom("*********************", 0, 1,
+  //       charset: "windows-1250");
+  //   bluetooth.printCustom("Ticket No: ${ticketData['ticket_no']}", 0, 1,
+  //       charset: "windows-1250");
+  //   bluetooth.printCustom("Coach No: ${trip['trip']['coach_no']}", 0, 1,
+  //       charset: "windows-1250");
+  //   bluetooth.printCustom(
+  //       "Departure Time: ${trip['trip']['departure_time']}", 0, 1,
+  //       charset: "windows-1250");
+  //   bluetooth.printCustom("Arrival Time: ${trip['trip']['arrival_time']}", 0, 1,
+  //       charset: "windows-1250");
+  //   bluetooth.printCustom(
+  //       "Bording Point: ${data['boarding_point']} - ${getBoardingTime()}", 0, 1,
+  //       charset: "windows-1250");
+  //   bluetooth.printCustom(
+  //       "Dropping Point: ${data['dropping_point']} - ${getDropingTime()}", 0, 1,
+  //       charset: "windows-1250");
+  //   bluetooth.printCustom(
+  //       "Issue Date: ${DateTime.now().dateFormat("dd MMM, yyyy")}", 1, 0);
+  //   bluetooth.printCustom("Booked By: ${loginInfo['data']['name']}", 1, 0);
+  //   seatDetails();
+  // }
+  //
+  // void seatDetails() {
+  //   bluetooth.printCustom("*********************", 0, 1,
+  //       charset: "windows-1250");
+  //   bluetooth.printCustom("Seat Details", 0, 1, charset: "windows-1250");
+  //   bluetooth.printCustom("*********************", 0, 1,
+  //       charset: "windows-1250");
+  //   bluetooth.printCustom("P Name: ${data['name']}", 0, 1,
+  //       charset: "windows-1250");
+  //   bluetooth.printCustom("P Phone: ${data['phone']}", 0, 1,
+  //       charset: "windows-1250");
+  //   bluetooth.printCustom("Seat No: ${data['seats'].toString()}", 0, 1,
+  //       charset: "windows-1250");
+  //   bluetooth.printCustom("Total Seats: ${data['seats'].length}", 0, 1,
+  //       charset: "windows-1250");
+  //   paymentDetails();
+  // }
+  //
+  // void paymentDetails() {
+  //   bluetooth.printCustom("*********************", 0, 1,
+  //       charset: "windows-1250");
+  //   bluetooth.printCustom("Payment Details", 0, 1, charset: "windows-1250");
+  //   bluetooth.printCustom("*********************", 0, 1,
+  //       charset: "windows-1250");
+  //   bluetooth.printCustom(
+  //       "Seat Fare (${trip['trip']['price']} X ${data['seats'].length}): BDT ${(double.tryParse("${trip['trip']['price']}") ?? 0.0) * data['seats'].length}",
+  //       0,
+  //       1,
+  //       charset: "windows-1250");
+  //   bluetooth.printCustom("(+) Service Charge: BDT 0", 0, 1,
+  //       charset: "windows-1250");
+  //   bluetooth.printCustom("(-) Discount: BDT ${data['discount']}", 0, 1,
+  //       charset: "windows-1250");
+  //   bluetooth.printCustom(
+  //       "Grand Total: BDT ${((double.tryParse("${trip['trip']['price']}") ?? 0.0) * data['seats'].length) - (double.tryParse("${data['discount']}") ?? 0.0)}",
+  //       0,
+  //       1,
+  //       charset: "windows-1250");
+  //
+  //   bluetooth.printNewLine();
+  //   bluetooth.paperCut();
+  //   isPrinting.value = false;
+  //   update();
+  // }
 
   void disconnectNow() {
     bluetooth.disconnect();

@@ -23,7 +23,7 @@ void main() async {
   // FirebaseServices().init();
 
   SystemChrome.setSystemUIOverlayStyle(
-      SystemUiOverlayStyle(statusBarColor: Color(0xffdc3545)));
+      SystemUiOverlayStyle(statusBarColor: Color(0xffdc3545),),);
   initializeDateFormatting();
 
   /// - @ run first page from here

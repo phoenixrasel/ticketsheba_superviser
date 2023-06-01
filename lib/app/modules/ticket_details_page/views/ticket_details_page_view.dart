@@ -35,60 +35,61 @@ class TicketDetailsPageView extends GetView<TicketDetailsPageController> {
           ),
           centerTitle: true,
         ),
-        body: Padding(
+        body:
+        Padding(
           padding: const EdgeInsets.all(24),
           child: Column(
             children: [
-              Obx(() {
-                return controller.connected.value
-                    ? Container()
-                    : Row(
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(4),
-                                border: Border.all(
-                                    color: ExtraColors.BLACK_400, width: .8)),
-                            width: 170,
-                            padding: EdgeInsets.symmetric(horizontal: 10),
-                            child: Obx(() {
-                              return controller.devices.isEmpty
-                                  ? Container()
-                                  : DropdownButtonHideUnderline(
-                                      child: DropdownButton(
-                                          isExpanded: true,
-                                          value: controller
-                                              .connectedDeviceName.value,
-                                          items: controller.devices
-                                              .map((e) => DropdownMenuItem(
-                                                  value: e.name,
-                                                  child: Text("${e.name}")))
-                                              .toList(),
-                                          onChanged: (value) {
-                                            controller.setDevice(value);
-                                          }),
-                                    );
-                            }),
-                          ),
-                          Container(
-                            height: 40,
-                            width: 120,
-                            margin: EdgeInsets.only(left: 10),
-                            child: ElevatedButton.icon(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.orange,
-                                foregroundColor: Colors.white,
-                              ),
-                              onPressed: () {
-                                controller.connectNow2(context);
-                              },
-                              icon: Icon(Icons.bluetooth),
-                              label: Text("Connect"),
-                            ),
-                          )
-                        ],
-                      );
-              }),
+              // Obx(() {
+              //   return controller.connected.value
+              //       ? Container()
+              //       : Row(
+              //           children: [
+              //             Container(
+              //               decoration: BoxDecoration(
+              //                   borderRadius: BorderRadius.circular(4),
+              //                   border: Border.all(
+              //                       color: ExtraColors.BLACK_400, width: .8)),
+              //               width: 170,
+              //               padding: EdgeInsets.symmetric(horizontal: 10),
+              //               child: Obx(() {
+              //                 return controller.devices.isEmpty
+              //                     ? Container()
+              //                     : DropdownButtonHideUnderline(
+              //                         child: DropdownButton(
+              //                             isExpanded: true,
+              //                             value: controller
+              //                                 .connectedDeviceName.value,
+              //                             items: controller.devices
+              //                                 .map((e) => DropdownMenuItem(
+              //                                     value: e.name,
+              //                                     child: Text("${e.name}")))
+              //                                 .toList(),
+              //                             onChanged: (value) {
+              //                               controller.setDevice(value);
+              //                             }),
+              //                       );
+              //               }),
+              //             ),
+              //             Container(
+              //               height: 40,
+              //               width: 120,
+              //               margin: EdgeInsets.only(left: 10),
+              //               child: ElevatedButton.icon(
+              //                 style: ElevatedButton.styleFrom(
+              //                   backgroundColor: Colors.orange,
+              //                   foregroundColor: Colors.white,
+              //                 ),
+              //                 onPressed: () {
+              //                   // controller.connectNow2(context);
+              //                 },
+              //                 icon: Icon(Icons.bluetooth),
+              //                 label: Text("Connect"),
+              //               ),
+              //             )
+              //           ],
+              //         );
+              // }),
               SizedBox(height: 12),
               Padding(
                 padding: const EdgeInsets.only(top: 24.0),
@@ -493,7 +494,8 @@ class TicketDetailsPageView extends GetView<TicketDetailsPageController> {
                             foregroundColor: Colors.white,
                           ),
                           onPressed: () {
-                            controller.printNow58(context: context);
+                            // controller.printNow58(context: context);
+                            controller.printNow();
                           },
                           icon: Icon(Icons.print),
                           label: Text("Print"));

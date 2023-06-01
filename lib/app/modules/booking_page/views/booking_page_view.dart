@@ -17,6 +17,7 @@ import '../controllers/booking_page_controller.dart';
 
 class BookingPageView extends GetView<BookingPageController> {
   const BookingPageView({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,13 +52,17 @@ class BookingPageView extends GetView<BookingPageController> {
                     : GlobalButton.btn(
                         text: "Buy",
                         onTap: () {
-                          if (controller.inputs['name']!.text.isEmpty) {
+                          if (controller.inputs['name']!.text.isEmpty)
                             GlobalSnackbar.error(msg: "Enter name");
-                          } else if (controller.inputs['phone']!.text.isEmpty) {
+                           else if (controller.inputs['phone']!.text.isEmpty)
                             GlobalSnackbar.error(msg: "Enter phone");
-                          } else {
+                           else if (controller.inputs['boarding']!.text.isEmpty)
+                             GlobalSnackbar.error(msg: "Please select boarding poiont");
+                           else if (controller.inputs['droping']!.text.isEmpty)
+                             GlobalSnackbar.error(msg: "Please enter dropping point");
+                           else
                             showSubmitAlert(controller: controller);
-                          }
+
                         }),
               ),
             ),
@@ -115,6 +120,10 @@ class BookingPageView extends GetView<BookingPageController> {
                           headerText: "Grand Total"),
                       GlobalInput.inputField(
                           controller: controller.inputs['payment-amount']!,
+                          onChange: (value) {
+                            controller.inputs['due-amount']!.text =
+                                "${int.parse(controller.inputs['grand-total']!.text) - int.parse(controller.inputs['payment-amount']!.text)}";
+                          },
                           headerText: "Payment Amount"),
                       GlobalInput.inputField(
                           enable: false,
@@ -208,6 +217,11 @@ class BookingPageView extends GetView<BookingPageController> {
                           text: "Continue",
                           onTap: () {
                             Get.back();
+                            if(controller.selectedPaymentOption.value == controller.paymentOption[0])
+                              GlobalSnackbar.error(msg: "Please select your payment options");
+                            else if(controller.selectedPaymentStatus.value == controller.paymentStatus[0])
+                              GlobalSnackbar.error(msg: "Please select your payment status");
+                            else
                             controller.setAndSubmit();
                             // if (controller.inputs['droping']!.text.isEmpty) {
                             //   GlobalSnackbar.error(msg: "Enter droping point");
@@ -331,56 +345,56 @@ class BookingPageView extends GetView<BookingPageController> {
         ]),
       );
 
-  // ticketView() => Container(
-  //       margin: EdgeInsets.all(24),
-  //       padding: EdgeInsets.all(12),
-  //       decoration: BoxDecoration(
-  //           color: Colors.white,
-  //           boxShadow: [
-  //             BoxShadow(
-  //               color: Colors.grey.shade200,
-  //               blurRadius: 6,
-  //               offset: Offset.zero,
-  //               spreadRadius: 2,
-  //             )
-  //           ],
-  //           borderRadius: BorderRadius.circular(6)),
-  //       child: Column(children: [
-  //         Container(
-  //           height: 24,
-  //           alignment: Alignment.center,
-  //           decoration: BoxDecoration(
-  //             color: Theme.of(Get.context!).colorScheme.primary,
-  //             borderRadius: BorderRadius.only(
-  //                 topLeft: Radius.circular(6), topRight: Radius.circular(6)),
-  //           ),
-  //           child: Text("Payment Information"),
-  //         ),
-  //         SizedBox(
-  //           height: 15,
-  //         ),
-  //         GlobalInput.inputField(
-  //             controller: controller.inputs['payment']!, headerText: "Payment"),
-  //         GlobalInput.inputField(
-  //             controller: controller.inputs['discount']!,
-  //             headerText: "Discount"),
-  //         GlobalInput.inputField(
-  //             controller: controller.inputs['grand-total']!,
-  //             headerText: "Grand Total"),
-  //         GlobalInput.inputField(
-  //             controller: controller.inputs['payment-amount']!,
-  //             headerText: "Payment Amount"),
-  //         GlobalInput.inputField(
-  //             controller: controller.inputs['grand-total']!,
-  //             headerText: "Due Amount"),
-  //         DropdownButton(
-  //             items: controller.paymentOption
-  //                 .map((e) => DropdownMenuItem(value: e, child: Text(e)))
-  //                 .toList(),
-  //             onChanged: (value) {}),
-  //         SizedBox(
-  //           height: AppDimens.paddingExtraGaint,
-  //         ),
-  //       ]),
-  //     );
+// ticketView() => Container(
+//       margin: EdgeInsets.all(24),
+//       padding: EdgeInsets.all(12),
+//       decoration: BoxDecoration(
+//           color: Colors.white,
+//           boxShadow: [
+//             BoxShadow(
+//               color: Colors.grey.shade200,
+//               blurRadius: 6,
+//               offset: Offset.zero,
+//               spreadRadius: 2,
+//             )
+//           ],
+//           borderRadius: BorderRadius.circular(6)),
+//       child: Column(children: [
+//         Container(
+//           height: 24,
+//           alignment: Alignment.center,
+//           decoration: BoxDecoration(
+//             color: Theme.of(Get.context!).colorScheme.primary,
+//             borderRadius: BorderRadius.only(
+//                 topLeft: Radius.circular(6), topRight: Radius.circular(6)),
+//           ),
+//           child: Text("Payment Information"),
+//         ),
+//         SizedBox(
+//           height: 15,
+//         ),
+//         GlobalInput.inputField(
+//             controller: controller.inputs['payment']!, headerText: "Payment"),
+//         GlobalInput.inputField(
+//             controller: controller.inputs['discount']!,
+//             headerText: "Discount"),
+//         GlobalInput.inputField(
+//             controller: controller.inputs['grand-total']!,
+//             headerText: "Grand Total"),
+//         GlobalInput.inputField(
+//             controller: controller.inputs['payment-amount']!,
+//             headerText: "Payment Amount"),
+//         GlobalInput.inputField(
+//             controller: controller.inputs['grand-total']!,
+//             headerText: "Due Amount"),
+//         DropdownButton(
+//             items: controller.paymentOption
+//                 .map((e) => DropdownMenuItem(value: e, child: Text(e)))
+//                 .toList(),
+//             onChanged: (value) {}),
+//         SizedBox(
+//           height: AppDimens.paddingExtraGaint,
+//         ),
+//       ]),
+//     );
 }
