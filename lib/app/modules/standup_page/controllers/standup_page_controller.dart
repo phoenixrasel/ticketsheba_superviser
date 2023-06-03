@@ -27,8 +27,16 @@ class StandupPageController extends GetxController {
         isSubmitting(false);
         if (value['type'] == "success") {
           GlobalSnackbar.success(msg: value['message']);
-          Get.offNamed(Routes.TICKET_DETAILS_PAGE,
-              arguments: {"id": value['data']['id']});
+          Get.offNamed(Routes.STAND_UP_TICKET_DETAILS,
+              arguments: {
+                "data": {
+                  "name": inputs['name']!.text.toString(),
+                  "Phone": inputs['phone']!.text.toString(),
+                  "paid": inputs['payment']!.text.toString(),
+                },
+                "ticket-data": value['data'],
+                "trip": tripData
+              });
         } else {
           GlobalSnackbar.error(msg: value['message']);
         }

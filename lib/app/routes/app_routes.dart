@@ -13,6 +13,7 @@ abstract class Routes {
   static const STANDUP_PAGE = _Paths.STANDUP_PAGE;
   static const TICKET_DETAILS_PAGE = _Paths.TICKET_DETAILS_PAGE;
   static const SEAT_DETAILS = _Paths.SEAT_DETAILS;
+  static const STAND_UP_TICKET_DETAILS = _Paths.STAND_UP_TICKET_DETAILS;
 }
 
 abstract class _Paths {
@@ -27,4 +28,5 @@ abstract class _Paths {
   static const STANDUP_PAGE = '/standup-page';
   static const TICKET_DETAILS_PAGE = '/ticket-details-page';
   static const SEAT_DETAILS = '/seat-details';
+  static const STAND_UP_TICKET_DETAILS = '/stand-up-ticket-details';
 }

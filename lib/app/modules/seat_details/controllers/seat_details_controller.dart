@@ -11,6 +11,7 @@ class SeatDetailsController extends GetxController {
   var bookType = Get.arguments['book-type'];
 
   int tripId = Get.arguments['tirp-id'];
+
   // String startingPoint = Get.arguments['starting-point'];
   // String endingPoint = Get.arguments['ending-point'];
   Map<String, dynamic> trip = Get.arguments['trip'];
@@ -57,6 +58,7 @@ class SeatDetailsController extends GetxController {
   RxInt companyId = 0.obs;
   RxInt customerId = 0.obs;
   RxInt price = 0.obs;
+
   getSeatDetails() async {
     isFetching.value = true;
     update();
@@ -135,8 +137,8 @@ class SeatDetailsController extends GetxController {
         });
       }
       /**
-           * adding gap or seat
-           */
+       * adding gap or seat
+       */
       columns.add({
         "seat-name": "",
         "is-selected": false,
@@ -144,8 +146,8 @@ class SeatDetailsController extends GetxController {
         "price": 0,
       });
       /**
-           * Calculating right column
-           */
+       * Calculating right column
+       */
       for (int rightColumn =
               (specialLeftSeatCount.value + (specialSeats.length * 3));
           rightColumn <
@@ -188,12 +190,12 @@ class SeatDetailsController extends GetxController {
 
     List<dynamic> bookedSeats = soldList;
     /**
-         * Calculating row
-         */
+     * Calculating row
+     */
     for (int row = 0; row < totalRow; row++) {
       /**
-           * Calculating left column
-           */
+       * Calculating left column
+       */
       List<Map<String, dynamic>> columns = [];
       for (int leftColumn = (seats.length * 3);
           leftColumn < ((seats.length * 3) + leftSeatCount.value);
@@ -206,8 +208,8 @@ class SeatDetailsController extends GetxController {
         });
       }
       /**
-           * adding gap or middle seat
-           */
+       * adding gap or middle seat
+       */
       if (lastSeatCount == 1 && row == totalRow - 1) {
         columns.add({
           "seat-name":
@@ -227,8 +229,8 @@ class SeatDetailsController extends GetxController {
       }
 
       /**
-           * Calculating right column
-           */
+       * Calculating right column
+       */
       for (int rightColumn = (leftSeatCount.value +
               (seats.length * 3) +
               (lastSeatCount == 1 && row == totalRow - 1 ? 1 : 0));
@@ -379,6 +381,7 @@ class SeatDetailsController extends GetxController {
   }
 
   var isSubmitting = false.obs;
+
   String selectedSeatName() {
     // List<Widget> seat = [];
     String seat = "";
@@ -416,8 +419,30 @@ class SeatDetailsController extends GetxController {
       }).then((value) {
         if (value['type'] == "success") {
           GlobalSnackbar.success(msg: value['message']);
-          // Get.offNamed(Routes.TICKET_DETAILS_PAGE,
-          //     arguments: {"id": value['data']['id']});
+          Get.offNamed(Routes.TICKET_DETAILS_PAGE, arguments: {
+            "ticket-data": value['data'],
+            "trip": trip,
+            "data": {
+              "seats": selectedSeatName(),
+              "unit_fair": price.value,
+              'total_fair': total.value,
+              'grand_total': total.value,
+              'payment_amount': total.value,
+              'payment_method': '',
+              'payment_status': '',
+              "name": "",
+              "phone": "",
+              "unit_special_fair": "0",
+              "discount": "0.0",
+              "due_amount": "0.0",
+              "passenger_name": "",
+              "passenger_phone": "",
+              "passenger_email": "",
+              "passenger_address": "",
+              "boarding_point": "",
+              "dropping_point": ""
+            }
+          });
         } else {
           GlobalSnackbar.error(msg: value['message']);
         }
