@@ -30,7 +30,7 @@ class HomeView extends GetView<HomeController> {
           ZoomTapAnimation(
             onTap: () {
               HomeComponent.normalAlert(
-                  titleText: "Search", bodyText: "Search", onTap: () {});
+                  titleText: "Search", bodyText: "Search", onTap: () {}, controller: controller);
             },
             child: Container(
               height: 45,

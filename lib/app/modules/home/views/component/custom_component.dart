@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:searchfield/searchfield.dart';
+import 'package:ticketsheba_superviser/global/widget/global_input.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 // import 'package:searchfield/searchfield.dart';
 
@@ -15,6 +17,7 @@ class HomeComponent {
           {bool barrierDismissible = false,
           required String titleText,
           required String bodyText,
+            required HomeController controller,
           String? btnText,
           required VoidCallback onTap,
           bool closeVisible = false}) =>
@@ -52,11 +55,47 @@ class HomeComponent {
             width: Get.width,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [],
+              children: [
+                ZoomTapAnimation(
+                    onTap: (){
+                      _selectDate(context, controller);
+                    },
+                    child: GlobalInput.inputField(controller: controller.inputs['date']!, headerText: "Search Date", enable: false))
+
+              ],
             ),
           ),
         ),
       );
+
+  static _selectDate(BuildContext context, HomeController  controller) async {
+    final DateTime? currentDate = await showDatePicker(
+      context: context,
+      initialDate: controller.searchDate.value,
+      firstDate: DateTime.now().subtract(Duration(days: 280)),
+      lastDate: DateTime.now().subtract(Duration(days: 1)),
+      helpText: "Period Date",
+      builder: (context, child) {
+        return Theme(
+          data: ThemeData.light().copyWith(
+            colorScheme: ColorScheme.light(
+              primary: Theme.of(context).colorScheme.primary,
+              onPrimary: Colors.white,
+              onSurface: const Color.fromRGBO(142, 139, 139, 1.0),
+            ),
+          ),
+          child: child!,
+        );
+      },
+    );
+    if (currentDate != null && currentDate != controller.searchDate.value) {
+      controller.searchDate.value = currentDate;
+      controller.inputs['date']!.text =
+          DateFormat("dd/MM/yyyy").format(currentDate);
+      controller.update();
+    }
+  }
+
   static searchView(
           {required HomeController controller,
           required ColorScheme theme,

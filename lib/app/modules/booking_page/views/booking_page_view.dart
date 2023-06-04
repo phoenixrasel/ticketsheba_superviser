@@ -223,41 +223,6 @@ class BookingPageView extends GetView<BookingPageController> {
                               GlobalSnackbar.error(msg: "Please select your payment status");
                             else
                             controller.setAndSubmit();
-                            // if (controller.inputs['droping']!.text.isEmpty) {
-                            //   GlobalSnackbar.error(msg: "Enter droping point");
-                            // } else if (controller
-                            //     .inputs['boarding']!.text.isEmpty) {
-                            //   GlobalSnackbar.error(msg: "Enter boarding point");
-                            // } else {
-                            // Get.toNamed(Routes.PAYMENT_DETAILS_PAGE,
-                            //     arguments: {
-                            //       "trip": controller.trip,
-                            //       "data": {
-                            //         "assign_trip_id": controller.tripId,
-                            //         "company_id": controller.companyId.value,
-                            //         "customer_id": "",
-                            //         "name": "",
-                            //         "gender": "",
-                            //         "phone": "",
-                            //         "email": "",
-                            //         "startpoint": controller.startingPoint,
-                            //         "endpoint": controller.endingPoint,
-                            //         "boarding_point":
-                            //             controller.inputs['boarding']!.text,
-                            //         "dropping_point":
-                            //             controller.inputs['droping']!.text,
-                            //         "seats": selectedSeatName(),
-                            //         "upper_seats": [],
-                            //         "unit_fair": controller.price.value,
-                            //         "total_fair": controller.total.value,
-                            //         "discount": 0,
-                            //         "service_chargea": 0,
-                            //         "payment_amount": controller.total.value,
-                            //         "payment_method": "",
-                            //         "payment_status": "unpaid"
-                            //       }
-                            //     });
-                            // }
                           },
                           width: Get.width - 100),
                     ),

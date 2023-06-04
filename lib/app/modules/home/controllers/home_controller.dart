@@ -32,6 +32,9 @@ class HomeController extends GetxController {
     "date": TextEditingController(),
   };
 
+  var searchDate = DateTime.now().subtract(Duration(days: 1)).obs;
+
+
   @override
   void onInit() {
     super.onInit();
