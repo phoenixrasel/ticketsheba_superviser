@@ -37,8 +37,13 @@ class Repository extends ApiProviders {
               endPoint: AppUrl.REGISTER_URL, method: Method.POST, map: map)
           .then((value) => value);
 
-  Future<dynamic> getAllRoutes() async => await tokenBaseApi(
+  Future<dynamic> getAllTrip(Map<String, dynamic> map) async => await tokenBaseApi(
       endPoint: AppUrl.TRIP_LIST_URL,
+      method: Method.GET,
+      map: map).then((value) => value);
+
+  Future<dynamic> getAllRoutes() async => await tokenBaseApi(
+      endPoint: AppUrl.ALL_ROUTES_URL,
       method: Method.GET,
       map: {}).then((value) => value);
 

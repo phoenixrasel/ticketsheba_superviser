@@ -4,7 +4,7 @@ class AppUrl {
   static String REGISTER_URL = "/customer-registration";
   static String LOGOUT_URL = "/customer-logout";
 
-  static String ALL_ROUTES_URL = "/route";
+  static String ALL_ROUTES_URL = "/routes/list";
   static String TRIP_LIST_URL = "/supervisor/booking/trip-list";
   static String BOOKING_CREATE_URL(id) => "/supervisor/booking/create/${id}";
   static String BOOKING_CREATE_URL2(id) => "/supervisor/booking/store/${id}";

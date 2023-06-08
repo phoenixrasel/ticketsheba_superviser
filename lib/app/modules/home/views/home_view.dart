@@ -12,6 +12,7 @@ import 'component/custom_drawer.dart';
 
 class HomeView extends GetView<HomeController> {
   const HomeView({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,7 +31,10 @@ class HomeView extends GetView<HomeController> {
           ZoomTapAnimation(
             onTap: () {
               HomeComponent.normalAlert(
-                  titleText: "Search", bodyText: "Search", onTap: () {}, controller: controller);
+                  titleText: "Search",
+                  bodyText: "Search",
+                  onTap: () {},
+                  controller: controller);
             },
             child: Container(
               height: 45,
@@ -38,16 +42,40 @@ class HomeView extends GetView<HomeController> {
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(color: Colors.grey.shade400, width: .7)),
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text("Search trip",
-                        style: TextStyle(color: Colors.grey.shade800)),
-                    Icon(
-                      Icons.search,
-                      color: Colors.grey.shade400,
-                    )
-                  ]),
+              child: Obx(() {
+                return Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      controller.searchedList.isEmpty
+                          ? Text("Search trip",
+                          style: TextStyle(color: Colors.grey.shade800))
+                          : Row(
+                        children: controller.searchedList
+                            .map((element) =>
+                            Container(
+                              decoration: BoxDecoration(
+                                borderRadius:
+                                BorderRadius.circular(100),
+                                color: Colors.grey.shade300,
+                              ),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 6, vertical: 3),
+                              margin: EdgeInsets.symmetric(horizontal: 6),
+                              child: Text(element, style: TextStyle(
+                                  color: Colors.grey.shade700)),
+                            ))
+                            .toList(),
+                      ),
+                      controller.searchedList.isEmpty ? Icon(
+                        Icons.search,
+                        color: Colors.grey.shade400,
+                      ) : ZoomTapAnimation(
+                          onTap: (){
+                            controller.clearData();
+                          },
+                          child: Icon(Icons.close, color: Colors.red))
+                    ]);
+              }),
             ),
           ),
           //MARK:-- home list view
@@ -100,13 +128,14 @@ class HomeView extends GetView<HomeController> {
                     height: 12,
                   ),
                   Obx(
-                    () => controller.getRouteState == ApiCallState.FETCHING
+                        () =>
+                    controller.getRouteState == ApiCallState.FETCHING
                         ? GlobalLoadng.loadingOnly()
                         : Expanded(
-                            child: SingleChildScrollView(
-                              child: Column(children: getTripList()),
-                            ),
-                          ),
+                      child: SingleChildScrollView(
+                        child: Column(children: getTripList()),
+                      ),
+                    ),
                   ),
                 ],
               ),
@@ -132,7 +161,9 @@ class HomeView extends GetView<HomeController> {
               Container(
                   width: 70,
                   child:
-                      Text("${element['trip']['title'].split(" / ").first}")),
+                  Text("${element['trip']['title']
+                      .split(" / ")
+                      .first}")),
               SizedBox(
                 width: 12,
               ),
@@ -160,7 +191,8 @@ class HomeView extends GetView<HomeController> {
                   alignment: Alignment.center,
                   width: 50,
                   child: Text(
-                      "${element['trip']['fleet']['seats'] - element['sold_ticket'].length}")),
+                      "${element['trip']['fleet']['seats'] -
+                          element['sold_ticket'].length}")),
               SizedBox(
                 width: 12,
               ),

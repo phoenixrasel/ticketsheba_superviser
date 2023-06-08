@@ -9,6 +9,7 @@ import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 import '../../../../../core/extra/app_dimens.dart';
 import '../../../../../core/theme/extra_colors.dart';
 import '../../../../../global/global_backdrop.dart';
+import '../../../../../global/widget/global_btn.dart';
 import '../../../../../global/widget/global_decoration.dart';
 import '../../controllers/home_controller.dart';
 
@@ -54,17 +55,97 @@ class HomeComponent {
             height: 270,
             width: Get.width,
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 ZoomTapAnimation(
                     onTap: (){
                       _selectDate(context, controller);
                     },
-                    child: GlobalInput.inputField(controller: controller.inputs['date']!, headerText: "Search Date", enable: false))
+                    child: GlobalInput.inputField(controller: controller.inputs['date']!, headerText: "Search Date", enable: false)),
+
+                SizedBox(height: 6),
+                Text("Route",
+                    style: TextStyle(
+                        color: ExtraColors.BLACK_500,
+                        fontWeight: FontWeight.w400,
+                        fontSize: AppDimens.tNormal)),
+                searchView(
+                    controller: controller,
+                    theme: Theme.of(Get.context!).colorScheme,
+                    suggestions: controller.boardingPoint
+                        .map((e) => SearchFieldListItem(e,
+                        child: Container(
+                            padding: EdgeInsets.symmetric(horizontal: 12),
+                            child: Text(e)),
+                        item: e))
+                        .toList(),
+                    hint: '-- Boarding points --',
+                    inputController: controller.inputs['boarding']!,
+                    onSelected: (value) {
+                      // controller.updateCustomerType(value.item);
+                    }),
+
+                SizedBox(height: 6),
+                Container(
+                  height: 76,
+                  margin:
+                  EdgeInsets.only(top: AppDimens.breatingSpace / 2),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("Bus Type",
+                          style: TextStyle(
+                              color: ExtraColors.BLACK_500,
+                              fontWeight: FontWeight.w400,
+                              fontSize: AppDimens.tNormal)),
+                      Obx(() => Container(
+                        margin: EdgeInsets.only(top: 5),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(4),
+                            border: Border.all(
+                                color: ExtraColors.BLACK_400,
+                                width: .8)),
+                        padding: EdgeInsets.symmetric(horizontal: 12),
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton(
+                              isExpanded: true,
+                              value: controller
+                                  .selectedBusType.value,
+                              items: controller.busType
+                                  .map((e) => DropdownMenuItem(
+                                  value: e, child: Text(e)))
+                                  .toList(),
+                              onChanged: (value) {
+                                controller.updateBusType(value);
+                              }),
+                        ),
+                      )),
+                    ],
+                  ),
+                ),
 
               ],
             ),
           ),
+
+          actions: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  margin: EdgeInsets.only(bottom: 12),
+                  child: GlobalButton.btn(
+                      text: "Search",
+                      onTap: () {
+                        Get.back();
+
+                          controller.addSearchlist();
+                      },
+                      width: Get.width - 100),
+                ),
+              ],
+            )
+          ],
         ),
       );
 
@@ -72,9 +153,9 @@ class HomeComponent {
     final DateTime? currentDate = await showDatePicker(
       context: context,
       initialDate: controller.searchDate.value,
-      firstDate: DateTime.now().subtract(Duration(days: 280)),
-      lastDate: DateTime.now().subtract(Duration(days: 1)),
-      helpText: "Period Date",
+      firstDate: DateTime.now(),
+      lastDate: DateTime.now().add(Duration(days: 365)),
+      helpText: "Date",
       builder: (context, child) {
         return Theme(
           data: ThemeData.light().copyWith(

@@ -10,8 +10,12 @@ enum ApiCallState { IDLE, FETCHING, DONE }
 class HomeController extends GetxController {
   var getRouteState = ApiCallState.IDLE.obs;
   var searchTripState = ApiCallState.IDLE.obs;
+  var boardingPoint = <String>[].obs;
 
   RxMap<String, dynamic> loginData = <String, dynamic>{}.obs;
+  var selectedBusType = "--Select bus type--".obs;
+  var busType = ["--Select bus type--", "AC", "Non-AC"];
+  updateBusType(value) => selectedBusType(value);
 
   var routeList = <dynamic>[].obs;
   var from = <String>[].obs;
@@ -30,9 +34,10 @@ class HomeController extends GetxController {
     "from": TextEditingController(),
     "to": TextEditingController(),
     "date": TextEditingController(),
+    "boarding": TextEditingController(),
   };
 
-  var searchDate = DateTime.now().subtract(Duration(days: 1)).obs;
+  var searchDate = DateTime.now().obs;
 
 
   @override
@@ -41,6 +46,21 @@ class HomeController extends GetxController {
     loginData.value = Pref.readData(key: Pref.SESSION);
     update();
     getAllRoutes();
+    // getAllTrips();
+  }
+
+  getAllRoutes() async {
+    loginData.value = Pref.readData(key: Pref.SESSION);
+    update();
+    try{
+      getRouteState(ApiCallState.FETCHING);
+      await Repository().getAllRoutes().then((value) {
+        boardingPoint.add("Clear");
+        value['routes'].forEach((element) {boardingPoint.add(element["name"]);});
+
+        getAllTrips();
+      });
+    }on Exception catch(e){}
   }
 
   @override
@@ -54,13 +74,40 @@ class HomeController extends GetxController {
   }
 
   RxList<dynamic> busData = <dynamic>[].obs;
+  var searchedList = <String>[].obs;
+  addSearchlist(){
+    searchedList.clear();
+    if(inputs['date']!.text.isNotEmpty)
+      searchedList.add(inputs['date']!.text);
+    if(inputs["boarding"]!.text.isNotEmpty)
+      searchedList.add(inputs['boarding']!.text);
+    if(selectedBusType.value != "--Select bus type--")
+      searchedList.add(selectedBusType.value);
+    searchedList.refresh();
+    getAllTrips();
+  }
 
-  getAllRoutes() async {
-    loginData.value = Pref.readData(key: Pref.SESSION);
-    update();
+  clearData(){
+    searchedList.clear();
+    searchedList.refresh();
+    inputs['date']!.text = "";
+    inputs['boarding']!.text = "";
+    selectedBusType("--Select bus type--");
+    getAllTrips();
+  }
+
+
+
+  getAllTrips() async {
+    // loginData.value = Pref.readData(key: Pref.SESSION);
+    // update();
     try {
       getRouteState(ApiCallState.FETCHING);
-      await Repository().getAllRoutes().then((response) {
+      await Repository().getAllTrip({
+        "assign_date": inputs['date']!.text.toString(),
+        "route": inputs['boarding']!.text,
+        "bus_type": selectedBusType == "--Select bus type--" ? "" : selectedBusType.value
+      }).then((response) {
         // routeList(response as List<dynamic>);
         busData(response['assign_trips']['data'] as List<dynamic>);
         // from.clear();
