@@ -49,6 +49,8 @@ class HomeController extends GetxController {
     // getAllTrips();
   }
 
+  var boardingId = <int>[].obs;
+
   getAllRoutes() async {
     loginData.value = Pref.readData(key: Pref.SESSION);
     update();
@@ -57,6 +59,7 @@ class HomeController extends GetxController {
       await Repository().getAllRoutes().then((value) {
         boardingPoint.add("Clear");
         value['routes'].forEach((element) {boardingPoint.add(element["name"]);});
+        value['routes'].forEach((element) {boardingId.add(element["id"]);});
 
         getAllTrips();
       });
@@ -105,8 +108,8 @@ class HomeController extends GetxController {
       getRouteState(ApiCallState.FETCHING);
       await Repository().getAllTrip({
         "assign_date": inputs['date']!.text.toString(),
-        "route": inputs['boarding']!.text,
-        "bus_type": selectedBusType == "--Select bus type--" ? "" : selectedBusType.value
+        "route_id": boardingId[boardingPoint.indexWhere((element) => element == inputs['boarding']!.text)],
+        "bus_type": selectedBusType == "--Select bus type--" ? "" : selectedBusType.value.toLowerCase()
       }).then((response) {
         // routeList(response as List<dynamic>);
         busData(response['assign_trips']['data'] as List<dynamic>);

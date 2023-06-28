@@ -172,7 +172,7 @@ class HomeComponent {
     if (currentDate != null && currentDate != controller.searchDate.value) {
       controller.searchDate.value = currentDate;
       controller.inputs['date']!.text =
-          DateFormat("dd/MM/yyyy").format(currentDate);
+          DateFormat("yyyy-MM-dd").format(currentDate);
       controller.update();
     }
   }
